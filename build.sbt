@@ -1,5 +1,7 @@
-import sbt.Keys._
-import sbt._
+//import sbt.Keys._
+//import sbt._
+import play.sbt.PlayScala
+import play.sbt.PlayImport.guice
 
 name := """to-do-sample"""
 organization := "com.example"
@@ -21,7 +23,7 @@ libraryDependencies ++= Seq(
   "net.ixias" %% "ixias-aws"  % "1.1.36",
   "net.ixias" %% "ixias-play" % "1.1.36",
   "mysql"          % "mysql-connector-java" % "5.1.+",
-  "ch.qos.logback" % "logback-classic"      % "1.1.+",
+  "ch.qos.logback" % "logback-classic"      % "1.1.+"
 )
 // Adds additional packages into Twirl
 //TwirlKeys.templateImports += "com.example.controllers._"
