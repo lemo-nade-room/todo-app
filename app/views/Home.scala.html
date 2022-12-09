@@ -3,11 +3,15 @@
  * to do sample project
  *
  *@
-
-@(vv: model.ViewValueCommon)
+@(vv: model.ViewValueCommon, categories: Seq[model.database.model.TodoCategoryModel])
 @common.Default(vv){
    <ul>
     <li><a>カテゴリー一覧</a></li>
+    <ol>
+    @for(category <- categories) {
+     <li>@category.name</li>
+    }
+    </ol>
     <li><a>Todo一覧</a></li>
  </ul>
 }
