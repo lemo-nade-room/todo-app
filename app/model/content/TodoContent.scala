@@ -5,5 +5,5 @@ case class TodoContent
   id: Long,
   title: String,
   body: String,
-  state: Int,
+  state: TodoStateContent,
 )
