@@ -32,4 +32,8 @@ case class DatabaseTodoRepository() extends TodoRepository {
   override def all(): Future[Seq[TodoContent]] = {
     for (todos <- Connection.db.run(Table.todos.result)) yield todos.map(_.convert)
   }
+
+  override def delete(todoId: Long): Future[Unit] = Connection.db.run {
+    Table.todos.filter(_.id === todoId).delete
+  }.map(_ => Unit)
 }

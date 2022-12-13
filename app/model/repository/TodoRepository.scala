@@ -36,4 +36,6 @@ trait TodoRepository {
    */
   def all(): Future[Seq[TodoContent]]
 
+  def delete(todoId: Long): Future[Unit]
+
 }
