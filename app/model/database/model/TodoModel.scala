@@ -1,5 +1,7 @@
 package model.database.model
 
+import model.content.{TodoContent, TodoStateContent}
+
 import java.sql.Timestamp
 
 case class TodoModel
@@ -11,4 +13,6 @@ case class TodoModel
   state: Int,
   updatedAt: Timestamp,
   createdAt: Timestamp,
-)
+) {
+  def convert: TodoContent = TodoContent(id, title, body, TodoStateContent(state))
+}
