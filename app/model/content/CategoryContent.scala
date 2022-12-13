@@ -6,5 +6,5 @@ case class CategoryContent
   name: String,
   slug: String,
   color: Int,
-  todos: List[TodoContent],
+  todos: Seq[TodoContent],
 )
