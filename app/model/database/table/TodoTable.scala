@@ -1,7 +1,6 @@
 package model.database.table
 
 import model.database.model.TodoModel
-
 import java.sql.Timestamp
 import slick.jdbc.MySQLProfile.api._
 import slick.lifted.ProvenShape
@@ -14,7 +13,7 @@ class TodoTable(tag: Tag) extends Table[TodoModel](tag, "to_do") {
 
   def title = column[String]("title")
 
-  def body = column[String]("text")
+  def body = column[String]("body")
 
   def state = column[Int]("state")
 
