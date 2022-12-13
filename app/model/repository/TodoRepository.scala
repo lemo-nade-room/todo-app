@@ -11,9 +11,9 @@ trait TodoRepository {
    * @param categoryId カテゴリID
    * @param title      タイトル
    * @param body       本文
-   * @return 作成されたTodo
+   * @return 作成されたTodoのID
    */
-  def create(categoryId: Long, title: String, body: String): Future[TodoContent]
+  def create(categoryId: Long, title: String, body: String): Future[Long]
 
   /**
    * Todoの内容を上書きする
@@ -34,6 +34,6 @@ trait TodoRepository {
   /**
    * @return 全てのTodoを取得する
    */
-  def all(): Future[List[TodoContent]]
+  def all(): Future[Seq[TodoContent]]
 
 }
