@@ -7,6 +7,17 @@
 @common.Default(vv){
 <div>
  <h1>Todos</h1>
+ <form action="" method="post">
+  <h1>新規作成</h1>
+  <input type="text" name="title" placeholder="タイトル">
+  <input type="text" name="body" placeholder="本文">
+  <select name="categoryId">
+   @for(categoryKind <- categories) {
+   <option value="@categoryKind.id">@categoryKind.name</option>
+   }
+  </select>
+  <input type="submit" value="作成">
+ </form>
  <ul>
   @for(category <- categories) {
    <li>
@@ -14,8 +25,31 @@
     <ul>
      @for(todo <- category.todos) {
       <li>
-       <h3>@todo.title</h3>
-       <p>@todo.body</p>
+       <form action="">
+        <h3><input type="text" name="title" value="@todo.title"></h3>
+        <p><input type="text" name="body" value="@todo.body"></p>
+        <input type="hidden" name="todoId" value="@todo.id">
+        <input type="hidden" name="_method" value="PUT">
+        <select name="state">
+         <option value="0" @if(todo.state.state==0){selected}>Todo(着手前)</option>
+         <option value="1" @if(todo.state.state==1){selected}>進行中</option>
+         <option value="2" @if(todo.state.state==2){selected}>完了</option>
+        </select>
+        <select name="category">
+         @for(categoryKind <- categories) {
+         <option value="@categoryKind.id" @if(categoryKind.id==category.id){selected}>
+          @categoryKind.name
+         </option>
+         }
+        </select>
+        <input type="submit" value="変更">
+       </form>
+       <form action="">
+        <input type="hidden" name="todoId" vlaue="@todo.id">
+        <input type="hidden" name="_method" value="DELETE">
+        <input type="submit" value="削除">
+       </form>
+       </p>
       </li>
      }
     </ul>
