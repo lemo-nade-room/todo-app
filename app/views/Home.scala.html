@@ -3,15 +3,24 @@
 * to do sample project
 *
 *@
-@(vv: model.ViewValueCommon, categories: Seq[model.database.model.TodoCategoryModel])
+@(vv: model.ViewValueCommon, categories: Seq[model.content.CategoryContent])
 @common.Default(vv){
-<ul>
- <li><a>カテゴリー一覧</a></li>
- <ol>
+<div>
+ <h1>Todos</h1>
+ <ul>
   @for(category <- categories) {
-  <li>@category.name</li>
+   <li>
+    <h2>@category.name</h2>
+    <ul>
+     @for(todo <- category.todos) {
+      <li>
+       <h3>@todo.title</h3>
+       <p>@todo.body</p>
+      </li>
+     }
+    </ul>
+   </li>
   }
- </ol>
- <li><a>Todo一覧</a></li>
-</ul>
+ </ul>
+</div>
 }

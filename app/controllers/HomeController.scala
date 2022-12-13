@@ -1,23 +1,12 @@
-/**
- *
- * to do sample project
- *
- */
-
 package controllers
 
 import javax.inject._
 import play.api.mvc._
 import model.ViewValueHome
-import model.database.table.TodoCategoryTable
-import slick.lifted.TableQuery
-import model.database.{Connection, Table}
-import slick.jdbc.MySQLProfile.api._
-
+import model.database.repository.DatabaseCategoryRepository
 import java.util.concurrent.TimeUnit
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
-import scala.util.Success
 
 @Singleton
 class HomeController @Inject()(val controllerComponents: ControllerComponents) extends BaseController {
@@ -28,10 +17,7 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
       cssSrc = Seq("main.css"),
       jsSrc  = Seq("main.js")
     )
-    val query = Table.todoCategories.result
-    val future = Connection.db.run(query)
-    Await.ready(future, Duration(10, TimeUnit.SECONDS))
-    val categories = future.value.get.get
+    val categories = Await.result(DatabaseCategoryRepository().all(), Duration(10, TimeUnit.SECONDS))
     Ok(views.html.Home(vv, categories))
   }
 }
