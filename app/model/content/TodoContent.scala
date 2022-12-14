@@ -18,7 +18,7 @@ object TodoContent {
 
   lazy val createForm: Form[Create] = Form(mapping(
     "title" -> text.verifying(TodoValidation.titleConstraint),
-    "body" -> text.verifying(TodoValidation.bodyConstraint),
+    "body" -> text,
     "categoryId" -> longNumber,
   )(Create.apply)(Create.unapply))
 
@@ -34,7 +34,7 @@ object TodoContent {
   lazy val updateForm: Form[Update] = Form(mapping(
     "todoId" -> longNumber,
     "title" -> text.verifying(TodoValidation.titleConstraint),
-    "body" -> text.verifying(TodoValidation.bodyConstraint),
+    "body" -> text,
     "state" -> number(min = 0, max = 2),
     "category" -> longNumber,
   )(Update.apply)(Update.unapply))
