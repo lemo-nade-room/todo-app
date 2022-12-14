@@ -34,7 +34,7 @@ object TodoContent {
     "todoId" -> longNumber,
     "title" -> text,
     "body" -> text,
-    "state" -> number,
+    "state" -> number(min = 0, max = 2),
     "category" -> longNumber,
   )(Update.apply)(Update.unapply))
 
