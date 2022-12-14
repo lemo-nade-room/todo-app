@@ -15,7 +15,7 @@ import scala.concurrent.duration.Duration
 @Singleton
 class HomeController @Inject()(val controllerComponents: ControllerComponents) extends BaseController {
 
-  def index(): Action[AnyContent] = Action.async { implicit req =>
+  def index: Action[AnyContent] = Action.async { implicit req =>
     val vv = ViewValueHome(
       title  = "Home",
       cssSrc = Seq("main.css"),
@@ -25,7 +25,7 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
       .map(categories => Ok(views.html.Home(vv, categories)))
   }
 
-  def create(): Action[AnyContent] = Action.async { implicit req =>
+  def create: Action[AnyContent] = Action.async { implicit req =>
     case class CreateTodo(title: String, body: String, categoryId: Long)
     val form = Form(
       mapping(
@@ -37,14 +37,14 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
     val create = form.bindFromRequest().get
     for {
       _ <- DatabaseTodoRepository().create(create.categoryId, create.title, create.body)
-      result <- index()(req)
+      result <- index(req)
     } yield result
   }
 
   def delete(todoId: Long): Action[AnyContent] = Action.async { implicit req =>
     for {
       _ <- DatabaseTodoRepository().delete(todoId)
-      result <- index()(req)
+      result <- index(req)
     } yield result
   }
 }
