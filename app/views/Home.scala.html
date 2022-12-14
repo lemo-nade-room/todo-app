@@ -30,9 +30,9 @@
         <h3><input type="text" name="title" value="@todo.title"></h3>
         <p><textarea name="body">@todo.body</textarea></p>
         <select name="state">
-         <option value="0" @if(todo.state.state==0){selected}>Todo(着手前)</option>
-         <option value="1" @if(todo.state.state==1){selected}>進行中</option>
-         <option value="2" @if(todo.state.state==2){selected}>完了</option>
+         <option value="0" @if(todo.state==0){selected}>Todo(着手前)</option>
+         <option value="1" @if(todo.state==1){selected}>進行中</option>
+         <option value="2" @if(todo.state==2){selected}>完了</option>
         </select>
         <select name="category">
          @for(categoryKind <- categories) {

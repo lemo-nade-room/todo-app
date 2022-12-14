@@ -10,7 +10,7 @@ object TodoContent {
     id: Long,
     title: String,
     body: String,
-    state: TodoStateContent,
+    state: Int,
   )
 
   case class Create(title: String, body: String, categoryId: Long)
