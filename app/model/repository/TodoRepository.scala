@@ -25,10 +25,10 @@ trait TodoRepository {
   def update
   (
     todoId: Long,
-    title: Option[String] = Option.empty,
-    body: Option[String] = Option.empty,
-    state: Option[TodoStateContent] = Option.empty,
-    categoryId: Option[Long] = Option.empty,
+    title: String,
+    body: String,
+    state: TodoStateContent,
+    categoryId: Long,
   ): Future[Unit]
 
   /**
