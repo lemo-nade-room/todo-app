@@ -4,11 +4,17 @@ import javax.inject._
 import play.api.mvc._
 import model.ViewValueHome
 import model.content.TodoContent.{createForm, updateForm}
-import model.database.repository.{DatabaseCategoryRepository, DatabaseTodoRepository}
+import model.repository.{CategoryRepository, TodoRepository}
+
 import scala.concurrent.ExecutionContext.Implicits.global
 
 @Singleton
-class HomeController @Inject()(val controllerComponents: ControllerComponents) extends BaseController {
+class HomeController @Inject()
+(
+  val controllerComponents: ControllerComponents,
+  val categoryRepository: CategoryRepository,
+  val todoRepository: TodoRepository
+) extends BaseController {
 
   def index: Action[AnyContent] = Action.async { implicit req =>
     val vv = ViewValueHome(
@@ -16,14 +22,14 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
       cssSrc = Seq("main.css"),
       jsSrc = Seq("main.js")
     )
-    DatabaseCategoryRepository().all()
-      .map(categories => Ok(views.html.Home(vv, categories)))
+     categoryRepository.all()
+       .map(categories => Ok(views.html.Home(vv, categories)))
   }
 
   def create: Action[AnyContent] = Action.async { implicit req =>
     val createTodo = createForm.bindFromRequest().get
     for {
-      _ <- DatabaseTodoRepository().create(createTodo)
+      _ <- todoRepository.create(createTodo)
       result <- index(req)
     } yield result
   }
@@ -31,14 +37,14 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
   def update: Action[AnyContent] = Action.async { implicit req =>
     val updateTodo = updateForm.bindFromRequest().get
     for {
-      _ <- DatabaseTodoRepository().update(updateTodo)
+      _ <- todoRepository.update(updateTodo)
       result <- index(req)
     } yield result
   }
 
   def delete(todoId: Long): Action[AnyContent] = Action.async { implicit req =>
     for {
-      _ <- DatabaseTodoRepository().delete(todoId)
+      _ <- todoRepository.delete(todoId)
       result <- index(req)
     } yield result
   }

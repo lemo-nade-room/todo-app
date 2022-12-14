@@ -1,9 +1,11 @@
 package model.repository
 
+import com.google.inject.ImplementedBy
 import model.content.TodoContent
-
+import model.database.repository.DatabaseTodoRepository
 import scala.concurrent.Future
 
+@ImplementedBy(classOf[DatabaseTodoRepository])
 trait TodoRepository {
   /**
    * 新規Todoを追加する
