@@ -8,24 +8,24 @@ import play.api.data.Form
 import play.api.data.Forms.{longNumber, mapping, number, text}
 
 import java.util.concurrent.TimeUnit
-import scala.concurrent.Await
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.{Await, Future}
 import scala.concurrent.duration.Duration
 
 @Singleton
 class HomeController @Inject()(val controllerComponents: ControllerComponents) extends BaseController {
 
-  def index(): Action[AnyContent] = Action { implicit req =>
+  def index(): Action[AnyContent] = Action.async { implicit req =>
     val vv = ViewValueHome(
       title  = "Home",
       cssSrc = Seq("main.css"),
       jsSrc  = Seq("main.js")
     )
-    val categories = Await.result(DatabaseCategoryRepository().all(), Duration(10, TimeUnit.SECONDS))
-    Ok(views.html.Home(vv, categories))
+    DatabaseCategoryRepository().all()
+      .map(categories => Ok(views.html.Home(vv, categories)))
   }
 
-  // TODO: 新規作成はできるがindexのViewが返せない
-  def create(): Action[AnyContent] = Action { implicit req =>
+  def create(): Action[AnyContent] = Action.async { implicit req =>
     case class CreateTodo(title: String, body: String, categoryId: Long)
     val form = Form(
       mapping(
@@ -35,7 +35,16 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
       )(CreateTodo.apply)(CreateTodo.unapply)
     )
     val create = form.bindFromRequest().get
-    Await.ready(DatabaseTodoRepository().create(create.categoryId, create.title, create.body), Duration(10, TimeUnit.SECONDS))
-    return index()
+    for {
+      _ <- DatabaseTodoRepository().create(create.categoryId, create.title, create.body)
+      result <- index()(req)
+    } yield result
+  }
+
+  def delete(todoId: Long): Action[AnyContent] = Action.async { implicit req =>
+    for {
+      _ <- DatabaseTodoRepository().delete(todoId)
+      result <- index()(req)
+    } yield result
   }
 }

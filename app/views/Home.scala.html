@@ -7,7 +7,7 @@
 @common.Default(vv){
 <div>
  <h1>Todos</h1>
- <form action="" method="post">
+ <form action="/" method="post">
   <h1>新規作成</h1>
   <input type="text" name="title" placeholder="タイトル">
   <input type="text" name="body" placeholder="本文">
@@ -25,7 +25,7 @@
     <ul>
      @for(todo <- category.todos) {
       <li>
-       <form action="">
+       <form action="/">
         <h3><input type="text" name="title" value="@todo.title"></h3>
         <p><input type="text" name="body" value="@todo.body"></p>
         <input type="hidden" name="todoId" value="@todo.id">
@@ -44,12 +44,7 @@
         </select>
         <input type="submit" value="変更">
        </form>
-       <form action="">
-        <input type="hidden" name="todoId" vlaue="@todo.id">
-        <input type="hidden" name="_method" value="DELETE">
-        <input type="submit" value="削除">
-       </form>
-       </p>
+       <a href="/@todo.id">削除</a>
       </li>
      }
     </ul>
