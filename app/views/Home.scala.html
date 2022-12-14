@@ -10,7 +10,7 @@
  <form action="/" method="post">
   <h1>新規作成</h1>
   <input type="text" name="title" placeholder="タイトル">
-  <input type="text" name="body" placeholder="本文">
+  <textarea name="body" placeholder="本文"></textarea>
   <select name="categoryId">
    @for(categoryKind <- categories) {
    <option value="@categoryKind.id">@categoryKind.name</option>
@@ -21,14 +21,14 @@
  <ul>
   @for(category <- categories) {
    <li>
-    <h2>@category.name</h2>
+    <h2>@category.name 色: @category.color</h2>
     <ul>
      @for(todo <- category.todos) {
       <li>
        <form action="/update" method="post">
         <input type="hidden" name="todoId" value="@todo.id">
         <h3><input type="text" name="title" value="@todo.title"></h3>
-        <p><input type="text" name="body" value="@todo.body"></p>
+        <p><textarea name="body">@todo.body</textarea></p>
         <select name="state">
          <option value="0" @if(todo.state.state==0){selected}>Todo(着手前)</option>
          <option value="1" @if(todo.state.state==1){selected}>進行中</option>
