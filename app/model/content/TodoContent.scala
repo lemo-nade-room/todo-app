@@ -2,6 +2,7 @@ package model.content
 
 import play.api.data.Form
 import play.api.data.Forms.{longNumber, mapping, number, text}
+import validation.TodoValidation
 
 
 object TodoContent {
@@ -16,7 +17,7 @@ object TodoContent {
   case class Create(title: String, body: String, categoryId: Long)
 
   lazy val createForm: Form[Create] = Form(mapping(
-    "title" -> text,
+    "title" -> text.verifying(TodoValidation.titleConstraint),
     "body" -> text,
     "categoryId" -> longNumber,
   )(Create.apply)(Create.unapply))

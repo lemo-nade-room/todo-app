@@ -3,7 +3,7 @@ package controllers
 import javax.inject._
 import play.api.mvc._
 import model.ViewValueHome
-import model.content.TodoContent.{createForm, updateForm}
+import model.content.TodoContent
 import model.repository.{CategoryRepository, TodoRepository}
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -27,7 +27,7 @@ class HomeController @Inject()
   }
 
   def create: Action[AnyContent] = Action.async { implicit req =>
-    val createTodo = createForm.bindFromRequest().get
+    val createTodo = TodoContent.createForm.bindFromRequest().get
     for {
       _ <- todoRepository.create(createTodo)
       result <- index(req)
@@ -35,7 +35,7 @@ class HomeController @Inject()
   }
 
   def update: Action[AnyContent] = Action.async { implicit req =>
-    val updateTodo = updateForm.bindFromRequest().get
+    val updateTodo = TodoContent.updateForm.bindFromRequest().get
     for {
       _ <- todoRepository.update(updateTodo)
       result <- index(req)
