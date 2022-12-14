@@ -1,6 +1,7 @@
 package model.database.model
 
 import java.sql.Timestamp
+import java.time.LocalDateTime
 
 
 final case class TodoCategoryModel
@@ -9,6 +10,6 @@ final case class TodoCategoryModel
   name: String,
   slug: String,
   color: Int,
-  updatedAt: Timestamp,
-  createdAt: Timestamp,
+  updatedAt: Timestamp = Timestamp.valueOf(LocalDateTime.now()),
+  createdAt: Timestamp = Timestamp.valueOf(LocalDateTime.now()),
 )
