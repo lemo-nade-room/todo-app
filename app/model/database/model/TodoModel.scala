@@ -15,5 +15,5 @@ case class TodoModel
   updatedAt: Timestamp = Timestamp.valueOf(LocalDateTime.now()),
   createdAt: Timestamp = Timestamp.valueOf(LocalDateTime.now()),
 ) {
-  def convert: TodoContent = TodoContent(id, title, body, TodoStateContent(state))
+  def convertView: TodoContent.View = TodoContent.View(id, title, body, TodoStateContent(state))
 }

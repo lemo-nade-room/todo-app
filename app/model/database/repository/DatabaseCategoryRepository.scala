@@ -32,7 +32,7 @@ case class DatabaseCategoryRepository() extends CategoryRepository {
           category.color,
           todos
             .sortWith((a, b) => a._2.updatedAt.after(b._2.updatedAt))
-            .map(_._2.convert)
+            .map(_._2.convertView)
         )}
         .toSeq
     }
