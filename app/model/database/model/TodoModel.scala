@@ -1,6 +1,7 @@
 package model.database.model
 
-import model.content.TodoContent
+import model.entity.Todo
+import model.entity.todo.{TodoBody, TodoCategory, TodoID, TodoState, TodoTitle}
 
 import java.sql.Timestamp
 import java.time.LocalDateTime
@@ -15,5 +16,13 @@ case class TodoModel
   updatedAt: Timestamp = Timestamp.valueOf(LocalDateTime.now()),
   createdAt: Timestamp = Timestamp.valueOf(LocalDateTime.now()),
 ) {
-  def convertView: TodoContent.View = TodoContent.View(id, title, body, state)
+  def todo(category: TodoCategory): Todo = Todo(
+    TodoID(id),
+    category,
+    TodoTitle(title),
+    TodoBody(body),
+    TodoState(state),
+    createdAt.toLocalDateTime,
+    updatedAt.toLocalDateTime,
+  )
 }

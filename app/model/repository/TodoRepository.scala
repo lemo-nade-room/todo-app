@@ -1,24 +1,27 @@
 package model.repository
 
 import com.google.inject.ImplementedBy
-import model.content.TodoContent
 import model.database.repository.DatabaseTodoRepository
+import model.entity.Todo
+import model.entity.todo.{TodoBody, TodoID, TodoState, TodoTitle}
+
 import scala.concurrent.Future
 
 @ImplementedBy(classOf[DatabaseTodoRepository])
 trait TodoRepository {
+
   /**
    * 新規Todoを追加する
    * @return 作成されたTodoのID
    */
-  def create(todo: TodoContent.Create): Future[Long]
+  def create(title: TodoTitle, body: TodoBody, state: TodoState): Future[Todo]
 
   /** Todoの内容を上書きする */
-  def update(todo: TodoContent.Update): Future[Unit]
+  def update(todo: Todo): Future[Unit]
 
   /** @return 全てのTodoを取得する */
-  def all(): Future[Seq[TodoContent.View]]
+  def all(): Future[Seq[Todo]]
 
-  def delete(todoId: Long): Future[Unit]
+  def delete(id: TodoID): Future[Unit]
 
 }
