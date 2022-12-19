@@ -16,12 +16,6 @@ object TodoContent {
 
   case class Create(title: String, body: String, categoryId: Long)
 
-  lazy val createForm: Form[Create] = Form(mapping(
-    "title" -> text.verifying(TodoValidation.titleConstraint),
-    "body" -> text,
-    "categoryId" -> longNumber,
-  )(Create.apply)(Create.unapply))
-
   case class Update
   (
     todoId: Long,
@@ -31,12 +25,5 @@ object TodoContent {
     categoryId: Long,
   )
 
-  lazy val updateForm: Form[Update] = Form(mapping(
-    "todoId" -> longNumber,
-    "title" -> text.verifying(TodoValidation.titleConstraint),
-    "body" -> text,
-    "state" -> number(min = 0, max = 2),
-    "category" -> longNumber,
-  )(Update.apply)(Update.unapply))
-
+  case class Delete(id: Long)
 }

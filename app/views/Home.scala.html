@@ -6,14 +6,16 @@
 @(vv: model.ViewValueCommon, categories: Seq[model.content.CategoryContent.View])
 @common.Default(vv){
 <div>
- <form action="/category" method="post">
+
+ <form action="/category/create" method="post">
   <h1>新規カテゴリ作成</h1>
   <input type="text" name="name" placeholder="カテゴリ名" required>
   <input type="text" name="slug" placeholder="slug" required>
   <input type="number" name="color" placeholder="色" required>
   <input type="submit" value="作成">
  </form>
- <form action="/" method="post">
+
+ <form action="/todo/create" method="post">
   <h1>新規TODO作成</h1>
   <input type="text" name="title" placeholder="タイトル" required>
   <textarea name="body" placeholder="本文" required></textarea>
@@ -24,23 +26,31 @@
   </select>
   <input type="submit" value="作成">
  </form>
+
  <h1>Todos</h1>
  <ul>
   @for(category <- categories) {
    <li>
     <hr>
-    <form action="/category/update" method="post">
+
+    <form action="/category/update" method="post" style="display: inline;">
      <input type="hidden" value="@category.id">
      <input type="text" value="@category.name">
      slug: <input type="text" value="@category.slug">
      color: <input type="number" value="@category.color">
      <input type="submit" value="カテゴリ変更">
-     <a href="/category/@category.id">カテゴリ削除</a>
     </form>
+
+    <form action="/category/delete" method="post" style="display: inline;">
+     <input type="hidden" name="id" value="@category.id">
+     <input type="submit" value="カテゴリ削除">
+    </form>
+
     <ul>
      @for(todo <- category.todos) {
       <li>
-       <form action="/update" method="post">
+
+       <form action="/todo/update" method="post" style="display: inline;">
         <input type="hidden" name="todoId" value="@todo.id">
         <h3><input type="text" name="title" value="@todo.title"></h3>
         <p><textarea name="body">@todo.body</textarea></p>
@@ -57,8 +67,13 @@
          }
         </select>
         <input type="submit" value="TODO変更">
-        <a href="/@todo.id">TODO削除</a>
        </form>
+
+       <form action="/todo/delete" method="post" style="display: inline;">
+        <input type="hidden" name="id" value="@todo.id">
+        <input type="submit" value="TODO削除">
+       </form>
+
       </li>
      }
     </ul>
