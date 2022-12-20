@@ -2,12 +2,11 @@ package model.database.model
 
 import model.entity.todo.TodoCategory
 import model.entity.todo.category.{CategoryColor, CategoryID, CategoryName, CategorySlug}
-
 import java.sql.Timestamp
 import java.time.LocalDateTime
 
 
-case class TodoCategoryModel
+final case class TodoCategoryModel
 (
   id: Long,
   name: String,

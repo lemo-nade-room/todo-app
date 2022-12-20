@@ -21,5 +21,5 @@ class TodoTable(tag: Tag) extends Table[TodoModel](tag, "to_do") {
 
   def createdAt = column[Timestamp]("created_at")
 
-  override def * : ProvenShape[TodoModel] = (id, categoryId, title, body, state, updatedAt, createdAt) <> (TodoModel.tupled, TodoModel.unapply)
+  override def * : ProvenShape[TodoModel] = (id, categoryId, title, body, state, updatedAt, createdAt) <> ((TodoModel.apply _).tupled, TodoModel.unapply)
 }

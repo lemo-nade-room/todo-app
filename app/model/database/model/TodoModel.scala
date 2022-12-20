@@ -6,7 +6,7 @@ import model.entity.todo.{TodoBody, TodoCategory, TodoID, TodoState, TodoTitle}
 import java.sql.Timestamp
 import java.time.LocalDateTime
 
-case class TodoModel
+final case class TodoModel
 (
   id: Long = 0,
   categoryId: Long,

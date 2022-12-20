@@ -16,5 +16,5 @@ class TodoCategoryTable(tag: Tag) extends Table[TodoCategoryModel](tag, "to_do_c
 
   def createdAt = column[Timestamp]("created_at")
 
-  def * = (id, name, slug, color, updatedAt, createdAt) <> (TodoCategoryModel.tupled, TodoCategoryModel.unapply)
+  def * = (id, name, slug, color, updatedAt, createdAt) <> ((TodoCategoryModel.apply _).tupled, TodoCategoryModel.unapply)
 }
