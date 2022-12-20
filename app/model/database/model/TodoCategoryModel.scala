@@ -25,3 +25,9 @@ case class TodoCategoryModel
     updatedAt.toLocalDateTime,
   )
 }
+
+object TodoCategoryModel {
+  def make(name: CategoryName, slug: CategorySlug, color: CategoryColor): TodoCategoryModel = TodoCategoryModel(
+    0, name.name, slug.slug, color.color
+  )
+}
