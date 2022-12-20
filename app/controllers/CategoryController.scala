@@ -4,10 +4,7 @@ import form.CategoryForm
 
 import javax.inject._
 import play.api.mvc._
-import model.repository.CategoryRepository
 import service.CategoryApplicationService
-
-import scala.concurrent.Await
 import scala.concurrent.ExecutionContext.Implicits.global
 
 @Singleton

@@ -2,7 +2,6 @@ package model.database.model
 
 import model.entity.Todo
 import model.entity.todo.{TodoBody, TodoCategory, TodoID, TodoState, TodoTitle}
-
 import java.sql.Timestamp
 import java.time.LocalDateTime
 

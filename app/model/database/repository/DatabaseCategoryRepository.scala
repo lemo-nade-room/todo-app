@@ -6,7 +6,6 @@ import model.entity.todo.TodoCategory
 import model.entity.todo.category.{CategoryColor, CategoryID, CategoryName, CategorySlug}
 import model.repository.CategoryRepository
 import slick.jdbc.MySQLProfile.api._
-
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 

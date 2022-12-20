@@ -4,7 +4,6 @@ import form.TodoForm
 
 import javax.inject._
 import play.api.mvc._
-import model.repository.{CategoryRepository, TodoRepository}
 import service.TodoApplicationService
 
 import scala.concurrent.ExecutionContext.Implicits.global

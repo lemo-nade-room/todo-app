@@ -2,7 +2,6 @@ package model.content
 
 import model.entity.Todo
 import model.entity.todo.TodoCategory
-import model.entity.todo.category.{CategoryID, CategoryName}
 
 object CategoryContent {
   case class View

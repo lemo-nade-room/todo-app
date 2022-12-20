@@ -5,7 +5,6 @@ import model.entity.todo.category.{CategoryColor, CategoryID, CategoryName, Cate
 import java.sql.Timestamp
 import java.time.LocalDateTime
 
-
 final case class TodoCategoryModel
 (
   id: Long,

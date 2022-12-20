@@ -1,10 +1,6 @@
 package model.content
 
 import model.entity.Todo
-import play.api.data.Form
-import play.api.data.Forms.{longNumber, mapping, number, text}
-import validation.TodoValidation
-
 
 object TodoContent {
   case class View

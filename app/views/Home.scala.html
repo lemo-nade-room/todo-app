@@ -7,6 +7,10 @@
 @common.Default(vv){
 <div>
 
+ @if(vv.error.nonEmpty) {
+  <p style="color: red;">@vv.error.get</p>
+ }
+
  <form action="/category/create" method="post">
   <h1>新規カテゴリ作成</h1>
   <input type="text" name="name" placeholder="カテゴリ名" required>
