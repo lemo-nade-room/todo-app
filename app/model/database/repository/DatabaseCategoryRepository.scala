@@ -6,6 +6,7 @@ import model.entity.todo.TodoCategory
 import model.entity.todo.category.{CategoryColor, CategoryID, CategoryName, CategorySlug}
 import model.repository.CategoryRepository
 import slick.jdbc.MySQLProfile.api._
+
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 
@@ -25,11 +26,11 @@ case class DatabaseCategoryRepository() extends CategoryRepository {
     } yield createdModel.category
   }
 
-  override def update(category: TodoCategory): Future[Unit] = Connection.db.run {
+  override def update(id: CategoryID, name: CategoryName, slug: CategorySlug, color: CategoryColor): Future[Unit] = Connection.db.run {
     Table.todoCategories
-      .filter(_.id === category.id.id)
+      .filter(_.id === id.id)
       .map(model => (model.name, model.slug, model.color))
-      .update((category.name.name, category.slug.slug, category.color.color))
+      .update((name.name, slug.slug, color.color))
       .map(_ => Unit)
   }
 

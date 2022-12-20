@@ -20,7 +20,7 @@ trait CategoryRepository {
    */
   def create(name: CategoryName, slug: CategorySlug, color: CategoryColor): Future[TodoCategory]
 
-  def update(category: TodoCategory): Future[Unit]
+  def update(id: CategoryID, name: CategoryName, slug: CategorySlug, color: CategoryColor): Future[Unit]
 
   /** 指定されたカテゴリIDのカテゴリをそのカテゴリに所属するTODOごと削除 */
   def delete(id: CategoryID): Future[Unit]

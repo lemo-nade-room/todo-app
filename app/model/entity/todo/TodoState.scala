@@ -12,3 +12,6 @@ case class TodoState(state: Int) {
   }
 }
 
+object TodoState {
+  def init: TodoState = TodoState(0)
+}

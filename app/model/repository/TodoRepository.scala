@@ -17,7 +17,7 @@ trait TodoRepository {
   def create(title: TodoTitle, body: TodoBody, state: TodoState, category: TodoCategory): Future[Todo]
 
   /** Todoの内容を上書きする */
-  def update(todo: Todo): Future[Unit]
+  def update(id: TodoID, title: TodoTitle, body: TodoBody, state: TodoState, category: TodoCategory): Future[Unit]
 
   /** @return 全てのTodoを取得する */
   def all(): Future[Seq[Todo]]

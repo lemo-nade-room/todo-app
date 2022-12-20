@@ -21,11 +21,18 @@ case class DatabaseTodoRepository() extends TodoRepository {
     } yield createdModel.todo(category)
   }
 
-  override def update(todo: Todo): Future[Unit] = Connection.db.run {
+  override def update
+  (
+    id: TodoID,
+    title: TodoTitle,
+    body: TodoBody,
+    state: TodoState,
+    category: TodoCategory
+  ): Future[Unit] = Connection.db.run {
     Table.todos
-      .filter(_.id === todo.id.id)
+      .filter(_.id === id.id)
       .map(model => (model.title, model.body, model.state, model.categoryId))
-      .update((todo.title.title, todo.body.body, todo.state.state, todo.category.id.id))
+      .update((title.title, body.body, state.state, category.id.id))
       .map(_ => Unit)
   }
 
