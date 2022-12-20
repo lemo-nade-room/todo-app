@@ -39,4 +39,8 @@ case class DatabaseCategoryRepository() extends CategoryRepository {
     Connection.db.run((todosDeleteQuery andThen categoryDeleteQuery).transactionally)
       .map(_ => Unit)
   }
+
+  override def find(id: CategoryID): Future[Option[TodoCategory]] = Connection.db.run {
+    Table.todoCategories.filter(_.id === id.id).result.headOption
+  }.map(_.map(_.category))
 }

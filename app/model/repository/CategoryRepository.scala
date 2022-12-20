@@ -25,5 +25,8 @@ trait CategoryRepository {
   /** 指定されたカテゴリIDのカテゴリをそのカテゴリに所属するTODOごと削除 */
   def delete(id: CategoryID): Future[Unit]
 
+  /** 指定されたカテゴリIDのカテゴリ */
+  def find(id: CategoryID): Future[Option[TodoCategory]]
+
 
 }

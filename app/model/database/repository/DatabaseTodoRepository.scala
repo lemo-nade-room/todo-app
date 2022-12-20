@@ -12,7 +12,6 @@ import scala.concurrent.Future
 
 case class DatabaseTodoRepository() extends TodoRepository {
 
-
   override def create(title: TodoTitle, body: TodoBody, state: TodoState, category: TodoCategory): Future[Todo] = {
     val newTodoModel = TodoModel.make(title, body, state, category)
     val insertQuery = Table.todos returning Table.todos.map(_.id) += newTodoModel
@@ -45,4 +44,18 @@ case class DatabaseTodoRepository() extends TodoRepository {
   override def delete(id: TodoID): Future[Unit] = Connection.db.run {
     Table.todos.filter(_.id === id.id).delete
   }.map(_ => Unit)
+
+  override def find(id: TodoID): Future[Option[Todo]] = {
+    Connection.db.run {
+      Table.todos
+        .join(Table.todoCategories)
+        .on(_.categoryId === _.id)
+        .filter(_._1.id === id.id)
+        .result
+        .headOption
+    }.map(_.map(tuple => {
+      val (todoModel, categoryModel) = tuple
+      todoModel.todo(categoryModel.category)
+    }))
+  }
 }

@@ -24,4 +24,6 @@ trait TodoRepository {
 
   def delete(id: TodoID): Future[Unit]
 
+  def find(id: TodoID): Future[Option[Todo]]
+
 }
