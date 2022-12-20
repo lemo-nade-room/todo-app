@@ -26,3 +26,9 @@ case class TodoModel
     updatedAt.toLocalDateTime,
   )
 }
+
+object TodoModel {
+  def make(title: TodoTitle, body: TodoBody, state: TodoState, category: TodoCategory): TodoModel = TodoModel(
+    0, category.id.id, title.title, body.body, state.state
+  )
+}

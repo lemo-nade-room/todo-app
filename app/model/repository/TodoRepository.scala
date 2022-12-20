@@ -3,7 +3,7 @@ package model.repository
 import com.google.inject.ImplementedBy
 import model.database.repository.DatabaseTodoRepository
 import model.entity.Todo
-import model.entity.todo.{TodoBody, TodoID, TodoState, TodoTitle}
+import model.entity.todo.{TodoBody, TodoCategory, TodoID, TodoState, TodoTitle}
 
 import scala.concurrent.Future
 
@@ -14,7 +14,7 @@ trait TodoRepository {
    * 新規Todoを追加する
    * @return 作成されたTodoのID
    */
-  def create(title: TodoTitle, body: TodoBody, state: TodoState): Future[Todo]
+  def create(title: TodoTitle, body: TodoBody, state: TodoState, category: TodoCategory): Future[Todo]
 
   /** Todoの内容を上書きする */
   def update(todo: Todo): Future[Unit]
