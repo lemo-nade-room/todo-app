@@ -1,6 +1,6 @@
 package model.database.table
 
-import model.database.model.TodoCategoryModel
+import model.database.ixiasmodel.TodoCategoryModel
 import java.sql.Timestamp
 import slick.jdbc.MySQLProfile.api._
 

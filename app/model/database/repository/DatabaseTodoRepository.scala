@@ -1,6 +1,6 @@
 package model.database.repository
 
-import model.database.model.TodoModel
+import model.database.ixiasmodel.TodoModel
 import model.repository.TodoRepository
 import model.database.{Connection, Table}
 import model.entity.Todo
