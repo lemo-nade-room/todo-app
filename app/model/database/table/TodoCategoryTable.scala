@@ -1,20 +1,40 @@
 package model.database.table
 
+
+import ixias.persistence.model.{DataSourceName, Table}
 import model.database.ixiasmodel.TodoCategoryModel
-import java.sql.Timestamp
-import slick.jdbc.MySQLProfile.api._
+import slick.jdbc.JdbcProfile
+import java.time.LocalDateTime
 
-class TodoCategoryTable(tag: Tag) extends Table[TodoCategoryModel](tag, "to_do_category") {
-  def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
-  def name = column[String]("name", O.Unique)
+case class TodoCategoryTable[P <: JdbcProfile]()(implicit val driver: P) extends Table[TodoCategoryModel, P] {
+  override lazy val dsn: Map[String, DataSourceName] = Map(
+    "master" -> DataSourceName("ixias.db.mysql://master/to_do"),
+    "slave" -> DataSourceName("ixias.db.mysql://slave/to_do"),
+  )
 
-  def slug = column[String]("slug")
+  import api._
 
-  def color = column[Int]("color")
+  class Query extends BasicQuery(new Table(_))
 
-  def updatedAt = column[Timestamp]("updated_at")
+  override val query = new Query
 
-  def createdAt = column[Timestamp]("created_at")
+  class Table(tag: Tag) extends BasicTable(tag, "to_do_category") {
 
-  def * = (id, name, slug, color, updatedAt, createdAt) <> ((TodoCategoryModel.apply _).tupled, TodoCategoryModel.unapply)
+    import TodoCategoryModel._
+
+    def id = column[Id]("id", O.PrimaryKey, O.AutoInc)
+
+    def name = column[String]("name", O.Unique)
+
+    def slug = column[String]("slug")
+
+    def color = column[Int]("color")
+
+    def updatedAt = column[LocalDateTime]("updated_at")
+
+    def createdAt = column[LocalDateTime]("created_at")
+
+    def * = (id.?, name, slug, color, updatedAt, createdAt) <> ((TodoCategoryModel.apply _).tupled, TodoCategoryModel.unapply)
+
+  }
 }

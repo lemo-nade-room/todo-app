@@ -11,7 +11,7 @@ import java.time.LocalDateTime
 case class TodoModel
 (
   id: Option[Id],
-  category: TodoCategoryModel,
+  category: TodoCategoryModel.Id,
   title: String,
   body: String,
   state: State,
@@ -49,7 +49,7 @@ object TodoModel {
     case object DONE extends State(2)
   }
 
-  def apply(category: TodoCategoryModel, title: String, body: String, state: State): WithNoId = Entity.WithNoId(
-    TodoModel(None, category, title, body, state)
+  def build(categoryId: TodoCategoryModel.Id, title: String, body: String, state: State): WithNoId = Entity.WithNoId(
+    TodoModel(None, categoryId, title, body, state)
   )
 }

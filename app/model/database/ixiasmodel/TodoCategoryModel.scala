@@ -35,7 +35,7 @@ object TodoCategoryModel {
   type WithNoId = Entity.WithNoId[Id, TodoCategoryModel]
   type EmbeddedId = Entity.EmbeddedId[Id, TodoCategoryModel]
 
-  def apply(name: String, slug: String, color: Int): WithNoId = Entity.WithNoId(
+  def build(name: String, slug: String, color: Int): WithNoId = Entity.WithNoId(
     new TodoCategoryModel(None, name, slug, color)
   )
 }

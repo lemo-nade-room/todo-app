@@ -1,25 +1,41 @@
 package model.database.table
 
-import model.database.ixiasmodel.TodoModel
-import java.sql.Timestamp
-import slick.jdbc.MySQLProfile.api._
-import slick.lifted.ProvenShape
+import ixias.persistence.model.{DataSourceName, Table}
+import model.database.ixiasmodel.{TodoCategoryModel, TodoModel}
+import slick.jdbc.JdbcProfile
+import java.time.LocalDateTime
 
-class TodoTable(tag: Tag) extends Table[TodoModel](tag, "to_do") {
+case class TodoTable[P <: JdbcProfile]()(implicit val driver: P) extends Table[TodoModel, P] {
+  override lazy val dsn: Map[String, DataSourceName] = Map(
+    "master" -> DataSourceName("ixias.db.mysql://master/to_do"),
+    "slave" -> DataSourceName("ixias.db.mysql://slave/to_do"),
+  )
 
-  def id = column[Long]("id", O.AutoInc, O.PrimaryKey)
+  import api._
 
-  def categoryId = column[Long]("category_id")
+  class Query extends BasicQuery(new Table(_))
 
-  def title = column[String]("title")
+  override val query = new Query
 
-  def body = column[String]("body")
+  class Table(tag: Tag) extends BasicTable(tag, "to_do") {
 
-  def state = column[Short]("state")
+    import TodoModel._
 
-  def updatedAt = column[Timestamp]("updated_at")
+    def id = column[Id]("id", O.AutoInc, O.PrimaryKey)
 
-  def createdAt = column[Timestamp]("created_at")
+    def categoryId = column[TodoCategoryModel.Id]("category_id")
 
-  override def * : ProvenShape[TodoModel] = (id, categoryId, title, body, state, updatedAt, createdAt) <> ((TodoModel.apply _).tupled, TodoModel.unapply)
+    def title = column[String]("title")
+
+    def body = column[String]("body")
+
+    def state = column[State]("state")
+
+    def updatedAt = column[LocalDateTime]("updated_at")
+
+    def createdAt = column[LocalDateTime]("created_at")
+
+    def * = (id.?, categoryId, title, body, state, updatedAt, createdAt) <> ((TodoModel.apply _).tupled, TodoModel.unapply)
+
+  }
 }
