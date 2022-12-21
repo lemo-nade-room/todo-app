@@ -14,6 +14,5 @@ case class ViewValueHome(
   cssSrc: Seq[String],
   jsSrc:  Seq[String],
   categories: Seq[CategoryContent.View],
-  error: Option[String],
 ) extends ViewValueCommon
 
