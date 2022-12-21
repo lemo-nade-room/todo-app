@@ -1,13 +1,84 @@
 @*
- *
- * to do sample project
- *
- *@
-
-@(vv: model.ViewValueCommon)
+*
+* to do sample project
+*
+*@
+@(vv: model.ViewValueHome)
 @common.Default(vv){
-   <ul>
-    <li><a>カテゴリー一覧</a></li>
-    <li><a>Todo一覧</a></li>
+<div>
+
+ <form action="/category/create" method="post">
+  <h1>新規カテゴリ作成</h1>
+  <input type="text" name="name" placeholder="カテゴリ名" required>
+  <input type="text" name="slug" placeholder="slug" required>
+  <input type="number" name="color" placeholder="色" required>
+  <input type="submit" value="作成">
+ </form>
+
+ <form action="/todo/create" method="post">
+  <h1>新規TODO作成</h1>
+  <input type="text" name="title" placeholder="タイトル" required>
+  <textarea name="body" placeholder="本文" required></textarea>
+  <select name="categoryId">
+   @for(categoryKind <- vv.categories) {
+   <option value="@categoryKind.id">@categoryKind.name</option>
+   }
+  </select>
+  <input type="submit" value="作成">
+ </form>
+
+ <h1>Todos</h1>
+ <ul>
+  @for(category <- vv.categories) {
+   <li>
+    <hr>
+
+    <form action="/category/update" method="post" style="display: inline;">
+     <input type="hidden" value="@category.id">
+     <input type="text" value="@category.name">
+     slug: <input type="text" value="@category.slug">
+     color: <input type="number" value="@category.color">
+     <input type="submit" value="カテゴリ変更">
+    </form>
+
+    <form action="/category/delete" method="post" style="display: inline;">
+     <input type="hidden" name="id" value="@category.id">
+     <input type="submit" value="カテゴリ削除">
+    </form>
+
+    <ul>
+     @for(todo <- category.todos) {
+      <li>
+
+       <form action="/todo/update" method="post" style="display: inline;">
+        <input type="hidden" name="todoId" value="@todo.id">
+        <h3><input type="text" name="title" value="@todo.title"></h3>
+        <p><textarea name="body">@todo.body</textarea></p>
+        <select name="state">
+         <option value="0" @if(todo.state==0){selected}>Todo(着手前)</option>
+         <option value="1" @if(todo.state==1){selected}>進行中</option>
+         <option value="2" @if(todo.state==2){selected}>完了</option>
+        </select>
+        <select name="category">
+         @for(categoryKind <- vv.categories) {
+         <option value="@categoryKind.id" @if(categoryKind.id==category.id){selected}>
+          @categoryKind.name
+         </option>
+         }
+        </select>
+        <input type="submit" value="TODO変更">
+       </form>
+
+       <form action="/todo/delete" method="post" style="display: inline;">
+        <input type="hidden" name="id" value="@todo.id">
+        <input type="submit" value="TODO削除">
+       </form>
+
+      </li>
+     }
+    </ul>
+   </li>
+  }
  </ul>
+</div>
 }
