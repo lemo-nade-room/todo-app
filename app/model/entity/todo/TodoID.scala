@@ -1,4 +1,4 @@
 package model.entity.todo
 
-case class TodoID(id: Long)
+case class TodoID(value: Long)
 

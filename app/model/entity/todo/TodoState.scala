@@ -1,7 +1,7 @@
 package model.entity.todo
 
 
-case class TodoState(state: Int) {
+case class TodoState(value: Int) {
 
   private val MIN = 0
   private val MAX = 2

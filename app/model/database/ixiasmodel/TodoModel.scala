@@ -4,6 +4,7 @@ import ixias.model._
 import ixias.util.EnumStatus
 import model.database.ixiasmodel.TodoModel._
 import model.entity.Todo
+import model.entity.todo.category.{CategoryID, CategoryName}
 import model.entity.todo.{TodoBody, TodoCategory, TodoID, TodoState, TodoTitle}
 
 import java.time.LocalDateTime
@@ -47,9 +48,13 @@ object TodoModel {
     case object PROGRESS extends State(1)
 
     case object DONE extends State(2)
+
+    def of(state: TodoState): State = {
+      State.values.filter(_.code == state.value).head
+    }
   }
 
-  def build(categoryId: TodoCategoryModel.Id, title: String, body: String, state: State): WithNoId = Entity.WithNoId(
-    TodoModel(None, categoryId, title, body, state)
+  def build(categoryId: CategoryID, title: TodoTitle, body: TodoBody, state: TodoState): WithNoId = Entity.WithNoId(
+    TodoModel(None, TodoCategoryModel.Id(categoryId.value), title.value, body.value, State.of(state))
   )
 }

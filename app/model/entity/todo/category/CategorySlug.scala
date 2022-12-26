@@ -1,3 +1,3 @@
 package model.entity.todo.category
 
-case class CategorySlug(slug: String)
+case class CategorySlug(value: String)

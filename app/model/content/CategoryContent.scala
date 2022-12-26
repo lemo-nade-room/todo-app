@@ -15,10 +15,10 @@ object CategoryContent {
 
   object View {
     def make(category: TodoCategory, todos: Seq[Todo]): View = View (
-      category.id.id,
-      category.name.name,
-      category.slug.slug,
-      category.color.color,
+      category.id.value,
+      category.name.value,
+      category.slug.value,
+      category.color.value,
       todos.map(TodoContent.View.make)
     )
   }

@@ -4,6 +4,7 @@ import com.google.inject.ImplementedBy
 import model.database.repository.DatabaseTodoRepository
 import model.entity.Todo
 import model.entity.todo.{TodoBody, TodoCategory, TodoID, TodoState, TodoTitle}
+import slick.jdbc.MySQLProfile
 
 import scala.concurrent.Future
 

@@ -4,6 +4,7 @@ import com.google.inject.ImplementedBy
 import model.database.repository.DatabaseCategoryRepository
 import model.entity.todo.TodoCategory
 import model.entity.todo.category.{CategoryColor, CategoryID, CategoryName, CategorySlug}
+import slick.jdbc.MySQLProfile
 
 import scala.concurrent.Future
 

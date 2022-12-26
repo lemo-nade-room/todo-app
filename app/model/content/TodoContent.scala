@@ -13,10 +13,10 @@ object TodoContent {
 
   object View {
     def make(todo: Todo): View = View (
-      todo.id.id,
-      todo.title.title,
-      todo.body.body,
-      todo.state.state,
+      todo.id.value,
+      todo.title.value,
+      todo.body.value,
+      todo.state.value,
     )
   }
 

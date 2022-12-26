@@ -1,3 +1,3 @@
 package model.entity.todo
 
-case class TodoBody(body: String)
+case class TodoBody(value: String)
