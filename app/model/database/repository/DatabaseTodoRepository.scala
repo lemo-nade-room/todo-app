@@ -8,9 +8,10 @@ import model.entity.todo.{TodoBody, TodoCategory, TodoID, TodoState, TodoTitle}
 import slick.jdbc.MySQLProfile
 import scala.concurrent.Future
 
-case class DatabaseTodoRepository @Inject() () extends TodoRepository {
+case class DatabaseTodoRepository() extends TodoRepository {
 
   val repository: IxiasTodoRepository[MySQLProfile.type] = IxiasTodoRepository()(MySQLProfile)
+
   /**
    * 新規Todoを追加する
    *
