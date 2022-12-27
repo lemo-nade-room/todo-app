@@ -48,7 +48,7 @@ case class IxiasTodoRepository[P <: JdbcProfile]()(implicit val driver: P)
   }
 
   def delete(id: TodoID): Future[Unit] = {
-    remove(TodoModel.Id(id.value.asInstanceOf[TodoModel.Id.U])).map(_ => Unit)
+    remove(TodoModel.id(id)).map(_ => Unit)
   }
 
   def find(id: TodoID): Future[Option[Todo]] = {
@@ -58,7 +58,7 @@ case class IxiasTodoRepository[P <: JdbcProfile]()(implicit val driver: P)
           todo
             .join(category)
             .on(_.categoryId === _.id)
-            .filter(_._1.id === TodoModel.Id(id.value.asInstanceOf[TodoModel.Id.U]))
+            .filter(_._1.id === TodoModel.id(id))
             .result
             .headOption
         }.map(_.map(tuple => {
