@@ -7,6 +7,7 @@
 package model
 
 import model.content.CategoryContent
+import play.api.data.FormError
 
 // Topページのviewvalue
 case class ViewValueHome(
@@ -14,5 +15,6 @@ case class ViewValueHome(
   cssSrc: Seq[String],
   jsSrc:  Seq[String],
   categories: Seq[CategoryContent.View],
+  errors: Seq[FormError],
 ) extends ViewValueCommon
 
