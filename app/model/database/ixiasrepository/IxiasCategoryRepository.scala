@@ -26,7 +26,7 @@ case class IxiasCategoryRepository[P <: JdbcProfile] @Inject()(implicit val driv
   }
 
   def create(name: CategoryName, slug: CategorySlug, color: CategoryColor): Future[CategoryID] = {
-    val newCategoryModel = TodoCategoryModel.build(name.value, slug.value, color.value)
+    val newCategoryModel = TodoCategoryModel.build(name, slug, color)
     for (id <- add(newCategoryModel)) yield CategoryID(id.longValue())
   }
 
@@ -38,7 +38,7 @@ case class IxiasCategoryRepository[P <: JdbcProfile] @Inject()(implicit val driv
   def delete(id: CategoryID): Future[Unit] = {
     DBAction(TodoCategoryTable, "master") { case (db, category) =>
       DBAction(TodoTable, "master") { case (_, todo) =>
-        val categoryModelID = TodoCategoryModel.Id(id.value.asInstanceOf[TodoCategoryModel.Id.U])
+        val categoryModelID = TodoCategoryModel.id(id)
         val todosDeleteQuery = todo.filter(_.categoryId === categoryModelID).delete
         val categoryDeleteQuery = category.filter(_.id === categoryModelID).delete
         db.run((todosDeleteQuery andThen categoryDeleteQuery).transactionally)

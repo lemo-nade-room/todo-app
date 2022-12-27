@@ -57,10 +57,12 @@ object TodoModel {
   }
 
   def build(categoryId: CategoryID, title: TodoTitle, body: TodoBody, state: TodoState): WithNoId = Entity.WithNoId(
-    TodoModel(None, TodoCategoryModel.Id(categoryId.value.asInstanceOf[TodoCategoryModel.Id.U]), title.value, body.value, State.of(state))
+    TodoModel(None, TodoCategoryModel.id(categoryId), title.value, body.value, State.of(state))
   )
 
   def build(id: TodoID, categoryId: CategoryID, title: TodoTitle, body: TodoBody, state: TodoState): EmbeddedId = Entity.EmbeddedId(
-    TodoModel(Some(Id(id.value.asInstanceOf[Id.U])), TodoCategoryModel.Id(categoryId.value.asInstanceOf[TodoCategoryModel.Id.U]), title.value, body.value, State.of(state))
+    TodoModel(Some(this.id(id)), TodoCategoryModel.Id(categoryId.value.asInstanceOf[TodoCategoryModel.Id.U]), title.value, body.value, State.of(state))
   )
+
+  def id(id: TodoID): Id = Id(id.value.asInstanceOf[Id.U])
 }

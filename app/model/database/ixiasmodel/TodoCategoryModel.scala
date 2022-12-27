@@ -34,12 +34,12 @@ object TodoCategoryModel {
   type WithNoId = Entity.WithNoId[Id, TodoCategoryModel]
   type EmbeddedId = Entity.EmbeddedId[Id, TodoCategoryModel]
 
-  def build(name: String, slug: String, color: Int): WithNoId = Entity.WithNoId(
-    TodoCategoryModel(None, name, slug, color)
+  def build(name: CategoryName, slug: CategorySlug, color: CategoryColor): WithNoId = Entity.WithNoId(
+    TodoCategoryModel(None, name.value, slug.value, color.value)
   )
 
   def build(id: CategoryID, name: CategoryName, slug: CategorySlug, color: CategoryColor): EmbeddedId = Entity.EmbeddedId(
-    TodoCategoryModel(Some(Id(id.value.asInstanceOf[Id.U])), name.value, slug.value, color.value)
+    TodoCategoryModel(Some(this.id(id)), name.value, slug.value, color.value)
   )
 
   def id(categoryID: CategoryID): Id = Id(categoryID.value.asInstanceOf[Id.U])
