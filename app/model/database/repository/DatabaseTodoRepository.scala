@@ -1,6 +1,5 @@
 package model.database.repository
 
-import com.google.inject.Inject
 import model.database.ixiasrepository.IxiasTodoRepository
 import model.repository.TodoRepository
 import model.entity.Todo

@@ -1,6 +1,5 @@
 package model.database.repository
 
-import com.google.inject.Inject
 import scala.concurrent.Future
 import model.database.ixiasrepository.IxiasCategoryRepository
 import model.entity.todo.TodoCategory
