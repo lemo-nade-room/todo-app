@@ -14,8 +14,8 @@ object CategoryForm {
 
   lazy val updateForm: Form[Update] = Form(mapping(
     "id" -> longNumber,
-    "name" -> text,
-    "slug" -> text,
+    "name" -> text.verifying(CategoryValidation.nameConstraint),
+    "slug" -> text.verifying(CategoryValidation.slugConstraint),
     "color" -> number,
   )(Update.apply)(Update.unapply))
 
