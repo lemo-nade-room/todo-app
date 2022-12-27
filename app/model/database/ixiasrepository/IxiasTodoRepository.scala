@@ -19,18 +19,6 @@ case class IxiasTodoRepository[P <: JdbcProfile]()(implicit val driver: P)
     for (id <- add(newTodoModel)) yield TodoID(id.longValue())
   }
 
-  def update
-  (
-    id: TodoID,
-    title: TodoTitle,
-    body: TodoBody,
-    state: TodoState,
-    category: TodoCategory
-  ): Future[Unit] = {
-    val newTodo = TodoModel.build(id, category.id, title, body, state)
-    update(newTodo).map(_ => Unit)
-  }
-
   def all(): Future[Seq[Todo]] = {
     DBAction(TodoTable, "slave") { case (db, todo) =>
       DBAction(TodoCategoryTable, "slave") { case (_, category) =>
@@ -45,10 +33,6 @@ case class IxiasTodoRepository[P <: JdbcProfile]()(implicit val driver: P)
         }))
       }
     }
-  }
-
-  def delete(id: TodoID): Future[Unit] = {
-    remove(TodoModel.id(id)).map(_ => Unit)
   }
 
   def find(id: TodoID): Future[Option[Todo]] = {

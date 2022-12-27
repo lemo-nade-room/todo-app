@@ -5,14 +5,12 @@ import ixias.persistence.SlickRepository
 import model.database.SlickResourceProvider
 import model.database.ixiasmodel.TodoCategoryModel
 import model.entity.todo.TodoCategory
-import model.entity.todo.category.{CategoryColor, CategoryID, CategoryName, CategorySlug}
-import model.repository.CategoryRepository
+import model.entity.todo.category.CategoryID
 import slick.jdbc.JdbcProfile
 import scala.concurrent.Future
 
 case class IxiasCategoryRepository[P <: JdbcProfile] @Inject()(implicit val driver: P)
-  extends CategoryRepository
-    with SlickRepository[TodoCategoryModel.Id, TodoCategoryModel, P]
+    extends SlickRepository[TodoCategoryModel.Id, TodoCategoryModel, P]
     with SlickResourceProvider[P] {
 
   import api._
@@ -25,16 +23,6 @@ case class IxiasCategoryRepository[P <: JdbcProfile] @Inject()(implicit val driv
     }
   }
 
-  def create(name: CategoryName, slug: CategorySlug, color: CategoryColor): Future[CategoryID] = {
-    val newCategoryModel = TodoCategoryModel.build(name, slug, color)
-    for (id <- add(newCategoryModel)) yield CategoryID(id.longValue())
-  }
-
-  def update(id: CategoryID, name: CategoryName, slug: CategorySlug, color: CategoryColor): Future[Unit] = {
-    val newCategory = TodoCategoryModel.build(id, name, slug, color)
-    update(newCategory).map(_ => Unit)
-  }
-
   def delete(id: CategoryID): Future[Unit] = {
     DBAction(TodoCategoryTable, "master") { case (db, category) =>
       DBAction(TodoTable, "master") { case (_, todo) =>
@@ -44,10 +32,6 @@ case class IxiasCategoryRepository[P <: JdbcProfile] @Inject()(implicit val driv
         db.run((todosDeleteQuery andThen categoryDeleteQuery).transactionally)
       }
     }.map(_ => Unit)
-  }
-
-  def find(id: CategoryID): Future[Option[TodoCategory]] = {
-    get(TodoCategoryModel.id(id)).map(_.map(_.v.category))
   }
 
   override def get(id: Id): Future[Option[EntityEmbeddedId]] = {
