@@ -16,7 +16,7 @@ case class IxiasTodoRepository[P <: JdbcProfile]()(implicit val driver: P)
 
   def create(title: TodoTitle, body: TodoBody, state: TodoState, category: TodoCategory): Future[TodoID] = {
     val newTodoModel = TodoModel.build(category.id, title, body, state)
-    for (id <- add(newTodoModel)) yield TodoID(id.longValue())
+    for (id <- add(newTodoModel)) yield new TodoID(id.longValue())
   }
 
   def all(): Future[Seq[Todo]] = {

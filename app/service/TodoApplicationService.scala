@@ -38,7 +38,7 @@ private case class TodoApplicationServiceImpl @Inject()
   }
 
   override def update(update: TodoContent.Update): Future[Unit] = Future {
-    val id = TodoID(update.todoId)
+    val id = new TodoID(update.todoId)
     val title = TodoTitle(update.title)
     val body = TodoBody(update.body)
     val state = TodoState(update.state)
@@ -52,7 +52,7 @@ private case class TodoApplicationServiceImpl @Inject()
   }
 
   override def delete(delete: TodoContent.Delete): Future[Unit] = {
-    val id = TodoID(delete.id)
+    val id = new TodoID(delete.id)
     todoRepository.delete(id)
   }
 }

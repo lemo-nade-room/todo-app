@@ -20,7 +20,7 @@ case class DatabaseTodoRepository() extends TodoRepository {
    */
   override def create(title: TodoTitle, body: TodoBody, state: TodoState, category: TodoCategory): Future[TodoID] = {
     val newTodoModel = TodoModel.build(category.id, title, body, state)
-    for (id <- repository.add(newTodoModel)) yield TodoID(id.longValue())
+    for (id <- repository.add(newTodoModel)) yield new TodoID(id.longValue())
   }
 
   /** Todoの内容を上書きする */

@@ -1,4 +1,3 @@
 package model.entity.todo
 
-case class TodoID(value: Long)
-
+class TodoID(val value: Long) extends AnyVal

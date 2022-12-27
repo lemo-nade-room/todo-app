@@ -22,7 +22,7 @@ case class TodoModel
   /** require id is not NULL */
   def todo(category: TodoCategory): Todo = {
     Todo(
-      TodoID(id.get),
+      new TodoID(id.get),
       category,
       TodoTitle(title),
       TodoBody(body),
@@ -64,5 +64,5 @@ object TodoModel {
     TodoModel(Some(this.id(id)), TodoCategoryModel.Id(categoryId.value.asInstanceOf[TodoCategoryModel.Id.U]), title.value, body.value, State.of(state))
   )
 
-  def id(id: TodoID): Id = Id(id.value.asInstanceOf[Id.U])
+  def id(id: TodoID): Id = Id(id.asInstanceOf[Id.U])
 }
