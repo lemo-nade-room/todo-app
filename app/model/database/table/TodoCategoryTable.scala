@@ -1,6 +1,5 @@
 package model.database.table
 
-
 import ixias.persistence.model.{DataSourceName, Table}
 import model.database.ixiasmodel.TodoCategoryModel
 import slick.jdbc.JdbcProfile

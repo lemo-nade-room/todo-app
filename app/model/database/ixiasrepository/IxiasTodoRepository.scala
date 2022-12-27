@@ -70,9 +70,10 @@ case class IxiasTodoRepository[P <: JdbcProfile]()(implicit val driver: P)
   }
 
   def get(id: Id): Future[Option[EntityEmbeddedId]] =
-    RunDBAction(TodoTable, "slave") { _
-      .filter(_.id === id)
-      .result.headOption
+    RunDBAction(TodoTable, "slave") {
+      _
+        .filter(_.id === id)
+        .result.headOption
     }
 
   def add(entity: EntityWithNoId): Future[Id] =
@@ -85,8 +86,8 @@ case class IxiasTodoRepository[P <: JdbcProfile]()(implicit val driver: P)
       val row = slick.filter(_.id === entity.id)
       for {
         old <- row.result.headOption
-        _   <- old match {
-          case None    => DBIO.successful(0)
+        _ <- old match {
+          case None => DBIO.successful(0)
           case Some(_) => row.update(entity.v)
         }
       } yield old
@@ -97,8 +98,8 @@ case class IxiasTodoRepository[P <: JdbcProfile]()(implicit val driver: P)
       val row = slick.filter(_.id === id)
       for {
         old <- row.result.headOption
-        _   <- old match {
-          case None    => DBIO.successful(0)
+        _ <- old match {
+          case None => DBIO.successful(0)
           case Some(_) => row.delete
         }
       } yield old

@@ -1,7 +1,6 @@
 package controllers
 
 import form.TodoForm
-
 import javax.inject._
 import play.api.mvc._
 import service.TodoApplicationService

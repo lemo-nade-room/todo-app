@@ -26,8 +26,7 @@ private case class CategoryApplicationServiceImpl @Inject()
 (
   todoRepository: TodoRepository,
   categoryRepository: CategoryRepository,
-) extends CategoryApplicationService
-{
+) extends CategoryApplicationService {
 
   override def views(): Future[Seq[CategoryContent.View]] = Future {
     val categories = Await.result(categoryRepository.all(), Duration(10, TimeUnit.SECONDS)).sortWith(_.name < _.name)

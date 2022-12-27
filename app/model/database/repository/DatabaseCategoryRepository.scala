@@ -1,7 +1,6 @@
 package model.database.repository
 
 import com.google.inject.Inject
-
 import scala.concurrent.Future
 import model.database.ixiasrepository.IxiasCategoryRepository
 import model.entity.todo.TodoCategory
@@ -9,9 +8,10 @@ import model.entity.todo.category.{CategoryColor, CategoryID, CategoryName, Cate
 import model.repository.CategoryRepository
 import slick.jdbc.MySQLProfile
 
-case class DatabaseCategoryRepository @Inject() () extends CategoryRepository {
+case class DatabaseCategoryRepository @Inject()() extends CategoryRepository {
 
   val repository: IxiasCategoryRepository[MySQLProfile.type] = IxiasCategoryRepository()(MySQLProfile)
+
   /**
    * @return 全てのカテゴリ
    */

@@ -5,7 +5,6 @@ import model.content.TodoContent
 import model.entity.todo.category.CategoryID
 import model.entity.todo.{TodoBody, TodoID, TodoState, TodoTitle}
 import model.repository.{CategoryRepository, TodoRepository}
-
 import java.util.concurrent.TimeUnit
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.Duration

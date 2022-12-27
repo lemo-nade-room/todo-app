@@ -10,7 +10,7 @@ import model.repository.CategoryRepository
 import slick.jdbc.JdbcProfile
 import scala.concurrent.Future
 
-case class IxiasCategoryRepository[P <: JdbcProfile] @Inject() (implicit val driver: P)
+case class IxiasCategoryRepository[P <: JdbcProfile] @Inject()(implicit val driver: P)
   extends CategoryRepository
     with SlickRepository[TodoCategoryModel.Id, TodoCategoryModel, P]
     with SlickResourceProvider[P] {
