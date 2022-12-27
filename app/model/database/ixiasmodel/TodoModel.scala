@@ -6,7 +6,6 @@ import model.database.ixiasmodel.TodoModel._
 import model.entity.Todo
 import model.entity.todo.category.CategoryID
 import model.entity.todo.{TodoBody, TodoCategory, TodoID, TodoState, TodoTitle}
-
 import java.time.LocalDateTime
 
 case class TodoModel
@@ -59,5 +58,9 @@ object TodoModel {
 
   def build(categoryId: CategoryID, title: TodoTitle, body: TodoBody, state: TodoState): WithNoId = Entity.WithNoId(
     TodoModel(None, TodoCategoryModel.Id(categoryId.value.asInstanceOf[TodoCategoryModel.Id.U]), title.value, body.value, State.of(state))
+  )
+
+  def build(id: TodoID, categoryId: CategoryID, title: TodoTitle, body: TodoBody, state: TodoState): EmbeddedId = Entity.EmbeddedId(
+    TodoModel(Some(Id(id.value.asInstanceOf[Id.U])), TodoCategoryModel.Id(categoryId.value.asInstanceOf[TodoCategoryModel.Id.U]), title.value, body.value, State.of(state))
   )
 }

@@ -4,11 +4,9 @@ import scala.concurrent.Future
 import slick.jdbc.JdbcProfile
 import ixias.persistence.SlickRepository
 import model.database.SlickResourceProvider
-import model.database.ixiasmodel.{TodoCategoryModel, TodoModel}
+import model.database.ixiasmodel.TodoModel
 import model.entity.Todo
 import model.entity.todo.{TodoBody, TodoCategory, TodoID, TodoState, TodoTitle}
-
-import java.time.LocalDateTime
 
 case class IxiasTodoRepository[P <: JdbcProfile]()(implicit val driver: P)
   extends SlickRepository[TodoModel.Id, TodoModel, P]
@@ -28,11 +26,10 @@ case class IxiasTodoRepository[P <: JdbcProfile]()(implicit val driver: P)
     body: TodoBody,
     state: TodoState,
     category: TodoCategory
-  ): Future[Unit] = RunDBAction(TodoTable, "master") { t =>
-    t.filter(_.id === TodoModel.Id(id.value.asInstanceOf[TodoModel.Id.U]))
-      .map(model => (model.title, model.body, model.state, model.categoryId))
-      .update((title.value, body.value, TodoModel.State.of(state), TodoCategoryModel.Id(category.id.value.asInstanceOf[TodoCategoryModel.Id.U])))
-  }.map(_ => Unit)
+  ): Future[Unit] = {
+    val newTodo = TodoModel.build(id, category.id, title, body, state)
+    update(newTodo).map(_ => Unit)
+  }
 
   def all(): Future[Seq[Todo]] = {
     DBAction(TodoTable, "slave") { case (db, todo) =>
@@ -51,9 +48,7 @@ case class IxiasTodoRepository[P <: JdbcProfile]()(implicit val driver: P)
   }
 
   def delete(id: TodoID): Future[Unit] = {
-    RunDBAction(TodoTable, "master") { t =>
-      t.filter(_.id === TodoModel.Id(id.value.asInstanceOf[TodoModel.Id.U])).delete
-    }.map(_ => Unit)
+    remove(TodoModel.Id(id.value.asInstanceOf[TodoModel.Id.U])).map(_ => Unit)
   }
 
   def find(id: TodoID): Future[Option[Todo]] = {

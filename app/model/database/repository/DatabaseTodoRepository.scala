@@ -10,7 +10,7 @@ import scala.concurrent.Future
 
 case class DatabaseTodoRepository @Inject() () extends TodoRepository {
 
-  val repository = IxiasTodoRepository[MySQLProfile]()(MySQLProfile)
+  val repository: IxiasTodoRepository[MySQLProfile.type] = IxiasTodoRepository()(MySQLProfile)
   /**
    * 新規Todoを追加する
    *

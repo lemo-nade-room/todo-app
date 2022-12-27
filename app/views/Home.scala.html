@@ -34,10 +34,10 @@
     <hr>
 
     <form action="/category/update" method="post" style="display: inline;">
-     <input type="hidden" value="@category.id">
-     <input type="text" value="@category.name">
-     slug: <input type="text" value="@category.slug">
-     color: <input type="number" value="@category.color">
+     <input type="hidden" name="id" value="@category.id">
+     <input type="text" name="name" value="@category.name">
+     slug: <input type="text" name="slug" value="@category.slug">
+     color: <input type="number" name="color" value="@category.color">
      <input type="submit" value="カテゴリ変更">
     </form>
 

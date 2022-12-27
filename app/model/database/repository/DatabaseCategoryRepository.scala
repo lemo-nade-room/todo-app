@@ -22,7 +22,7 @@ case class DatabaseCategoryRepository @Inject() () extends CategoryRepository {
    *
    * @return 作成されたカテゴリのID
    */
-  override def create(name: CategoryName, slug: CategorySlug, color: CategoryColor): Future[TodoCategory] =
+  override def create(name: CategoryName, slug: CategorySlug, color: CategoryColor): Future[CategoryID] =
     repository.create(name, slug, color)
 
   override def update(id: CategoryID, name: CategoryName, slug: CategorySlug, color: CategoryColor): Future[Unit] =

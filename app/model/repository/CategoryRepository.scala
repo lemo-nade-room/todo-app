@@ -19,7 +19,7 @@ trait CategoryRepository {
    * カテゴリの新規作成
    * @return 作成されたカテゴリのID
    */
-  def create(name: CategoryName, slug: CategorySlug, color: CategoryColor): Future[TodoCategory]
+  def create(name: CategoryName, slug: CategorySlug, color: CategoryColor): Future[CategoryID]
 
   def update(id: CategoryID, name: CategoryName, slug: CategorySlug, color: CategoryColor): Future[Unit]
 
