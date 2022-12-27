@@ -7,6 +7,17 @@
 @common.Default(vv){
 <div>
 
+ @if(vv.errors.nonEmpty) {
+  <div>
+   <p>エラー</p>
+   <ul>
+    @for(error <- vv.errors) {
+    <li>@error.message</li>
+    }
+   </ul>
+  </div>
+ }
+
  <form action="/category/create" method="post">
   <h1>新規カテゴリ作成</h1>
   <input type="text" name="name" placeholder="カテゴリ名" required>

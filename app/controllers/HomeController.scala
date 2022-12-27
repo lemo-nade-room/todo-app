@@ -3,11 +3,10 @@ package controllers
 import javax.inject._
 import play.api.mvc._
 import model.ViewValueHome
+import play.api.data.FormError
 import service.CategoryApplicationService
-import java.util.concurrent.TimeUnit
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.duration.Duration
-import scala.concurrent.{Await, Future}
+import scala.concurrent.Future
 
 @Singleton
 class HomeController @Inject()
@@ -16,14 +15,17 @@ class HomeController @Inject()
   val categoryApplicationService: CategoryApplicationService,
 ) extends BaseController {
 
-  def index: Action[AnyContent] = Action.async { implicit req => Future {
-    val categories = Await.result(categoryApplicationService.views(), Duration(10, TimeUnit.SECONDS))
-    val vv = ViewValueHome(
+  def index: Action[AnyContent] = Action.async { implicit req =>
+    homeView(Ok)
+  }
+
+  def homeView(status: play.api.mvc.Results#Status, errors: Seq[FormError] = Nil): Future[Result] = categoryApplicationService
+    .views()
+    .map(categories => status.apply(views.html.Home(ViewValueHome(
       title = "Home",
       cssSrc = Seq("main.css"),
       jsSrc = Seq("main.js"),
-      categories
-    )
-    Ok(views.html.Home(vv))
-  }}
+      categories = categories,
+      errors = errors,
+    ))))
 }
