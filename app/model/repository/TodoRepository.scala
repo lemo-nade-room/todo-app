@@ -15,7 +15,7 @@ trait TodoRepository {
    * 新規Todoを追加する
    * @return 作成されたTodoのID
    */
-  def create(title: TodoTitle, body: TodoBody, state: TodoState, category: TodoCategory): Future[Todo]
+  def create(title: TodoTitle, body: TodoBody, state: TodoState, category: TodoCategory): Future[TodoID]
 
   /** Todoの内容を上書きする */
   def update(id: TodoID, title: TodoTitle, body: TodoBody, state: TodoState, category: TodoCategory): Future[Unit]

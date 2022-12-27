@@ -8,22 +8,17 @@ import model.database.ixiasmodel.{TodoCategoryModel, TodoModel}
 import model.entity.Todo
 import model.entity.todo.{TodoBody, TodoCategory, TodoID, TodoState, TodoTitle}
 
+import java.time.LocalDateTime
+
 case class IxiasTodoRepository[P <: JdbcProfile]()(implicit val driver: P)
   extends SlickRepository[TodoModel.Id, TodoModel, P]
     with SlickResourceProvider[P] {
 
   import api._
 
-  def create(title: TodoTitle, body: TodoBody, state: TodoState, category: TodoCategory): Future[Todo] = {
-    val newTodoModel = TodoModel(None, TodoCategoryModel.Id(category.id.value), title.value, body.value, TodoModel.State.of(state))
-    for {
-      todoId <- RunDBAction(TodoTable, "master") { t =>
-        t returning t.map(_.id) += newTodoModel
-      }
-      todoModel <- RunDBAction(TodoTable, "slave") { t =>
-        t.filter(_.id === todoId).result.head
-      }
-    } yield todoModel.todo(category)
+  def create(title: TodoTitle, body: TodoBody, state: TodoState, category: TodoCategory): Future[TodoID] = {
+    val newTodoModel = TodoModel.build(category.id, title, body, state)
+    for (id <- add(newTodoModel)) yield TodoID(id.longValue())
   }
 
   def update

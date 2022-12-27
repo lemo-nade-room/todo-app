@@ -9,7 +9,9 @@ import model.entity.todo.category.{CategoryColor, CategoryID, CategoryName, Cate
 import model.repository.CategoryRepository
 import slick.jdbc.MySQLProfile
 
-case class DatabaseCategoryRepository @Inject() (repository: IxiasCategoryRepository[MySQLProfile]) extends CategoryRepository {
+case class DatabaseCategoryRepository @Inject() () extends CategoryRepository {
+
+  val repository: IxiasCategoryRepository[MySQLProfile.type] = IxiasCategoryRepository()(MySQLProfile)
   /**
    * @return 全てのカテゴリ
    */

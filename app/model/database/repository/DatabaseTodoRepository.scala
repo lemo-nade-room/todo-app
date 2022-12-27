@@ -8,14 +8,17 @@ import model.entity.todo.{TodoBody, TodoCategory, TodoID, TodoState, TodoTitle}
 import slick.jdbc.MySQLProfile
 import scala.concurrent.Future
 
-case class DatabaseTodoRepository @Inject() (repository: IxiasTodoRepository[MySQLProfile]) extends TodoRepository {
+case class DatabaseTodoRepository @Inject() () extends TodoRepository {
+
+  val repository = IxiasTodoRepository[MySQLProfile]()(MySQLProfile)
   /**
    * 新規Todoを追加する
    *
    * @return 作成されたTodoのID
    */
-  override def create(title: TodoTitle, body: TodoBody, state: TodoState, category: TodoCategory): Future[Todo] =
+  override def create(title: TodoTitle, body: TodoBody, state: TodoState, category: TodoCategory): Future[TodoID] = {
     repository.create(title, body, state, category)
+  }
 
   /** Todoの内容を上書きする */
   override def update(id: TodoID, title: TodoTitle, body: TodoBody, state: TodoState, category: TodoCategory): Future[Unit] =

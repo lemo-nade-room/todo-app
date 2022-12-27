@@ -4,7 +4,7 @@ import ixias.model._
 import ixias.util.EnumStatus
 import model.database.ixiasmodel.TodoModel._
 import model.entity.Todo
-import model.entity.todo.category.{CategoryID, CategoryName}
+import model.entity.todo.category.CategoryID
 import model.entity.todo.{TodoBody, TodoCategory, TodoID, TodoState, TodoTitle}
 
 import java.time.LocalDateTime
@@ -21,15 +21,18 @@ case class TodoModel
 ) extends EntityModel[Id] {
 
   /** require id is not NULL */
-  def todo(category: TodoCategory): Todo = Todo(
-    TodoID(id.get),
-    category,
-    TodoTitle(title),
-    TodoBody(body),
-    TodoState(state.code),
-    createdAt,
-    updatedAt,
-  )
+  def todo(category: TodoCategory): Todo = {
+    Todo(
+      TodoID(id.get),
+      category,
+      TodoTitle(title),
+      TodoBody(body),
+      TodoState(state.code),
+      createdAt,
+      updatedAt,
+    )
+  }
+
 }
 
 
@@ -50,11 +53,11 @@ object TodoModel {
     case object DONE extends State(2)
 
     def of(state: TodoState): State = {
-      State.values.filter(_.code == state.value).head
+      State.values.filter(_.code.toInt == state.value).head
     }
   }
 
   def build(categoryId: CategoryID, title: TodoTitle, body: TodoBody, state: TodoState): WithNoId = Entity.WithNoId(
-    TodoModel(None, TodoCategoryModel.Id(categoryId.value), title.value, body.value, State.of(state))
+    TodoModel(None, TodoCategoryModel.Id(categoryId.value.asInstanceOf[TodoCategoryModel.Id.U]), title.value, body.value, State.of(state))
   )
 }
