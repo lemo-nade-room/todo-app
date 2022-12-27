@@ -24,7 +24,7 @@ case class TodoModel
     Todo(
       new TodoID(id.get),
       category,
-      TodoTitle(title),
+      new TodoTitle(title),
       TodoBody(body),
       TodoState(state.code),
       createdAt,

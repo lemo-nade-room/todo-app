@@ -1,3 +1,3 @@
 package model.entity.todo
 
-case class TodoTitle(value: String)
+class TodoTitle(val value: String) extends AnyVal

@@ -26,7 +26,7 @@ private case class TodoApplicationServiceImpl @Inject()
 ) extends TodoApplicationService {
 
   override def create(create: TodoContent.Create): Future[Unit] = Future {
-    val title = TodoTitle(create.title)
+    val title = new TodoTitle(create.title)
     val body = TodoBody(create.body)
     val categoryId = CategoryID(create.categoryId)
     val category = Await.result(categoryRepository.find(categoryId), Duration(10, TimeUnit.SECONDS)) match {
@@ -39,7 +39,7 @@ private case class TodoApplicationServiceImpl @Inject()
 
   override def update(update: TodoContent.Update): Future[Unit] = Future {
     val id = new TodoID(update.todoId)
-    val title = TodoTitle(update.title)
+    val title = new TodoTitle(update.title)
     val body = TodoBody(update.body)
     val state = TodoState(update.state)
     val categoryId = CategoryID(update.categoryId)
