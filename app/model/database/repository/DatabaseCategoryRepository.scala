@@ -26,7 +26,7 @@ case class DatabaseCategoryRepository() extends CategoryRepository {
    */
   override def create(name: CategoryName, slug: CategorySlug, color: CategoryColor): Future[CategoryID] = {
     val newCategoryModel = TodoCategoryModel.build(name, slug, color)
-    for (id <- repository.add(newCategoryModel)) yield CategoryID(id.longValue())
+    for (id <- repository.add(newCategoryModel)) yield new CategoryID(id.longValue())
   }
 
   override def update(id: CategoryID, name: CategoryName, slug: CategorySlug, color: CategoryColor): Future[Unit] = {

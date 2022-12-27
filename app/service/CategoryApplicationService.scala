@@ -39,22 +39,22 @@ private case class CategoryApplicationServiceImpl @Inject()
   }
 
   override def create(create: CategoryContent.Create): Future[Unit] = {
-    val name = CategoryName(create.name)
-    val slug = CategorySlug(create.slug)
-    val color = CategoryColor(create.color)
+    val name = new CategoryName(create.name)
+    val slug = new CategorySlug(create.slug)
+    val color = new CategoryColor(create.color)
     categoryRepository.create(name, slug, color).map(_ => Unit)
   }
 
   override def update(update: CategoryContent.Update): Future[Unit] = {
-    val id = CategoryID(update.id)
-    val name = CategoryName(update.name)
-    val slug = CategorySlug(update.slug)
-    val color = CategoryColor(update.color)
+    val id = new CategoryID(update.id)
+    val name = new CategoryName(update.name)
+    val slug = new CategorySlug(update.slug)
+    val color = new CategoryColor(update.color)
     categoryRepository.update(id, name, slug, color)
   }
 
   override def delete(delete: CategoryContent.Delete): Future[Unit] = {
-    val id = CategoryID(delete.id)
+    val id = new CategoryID(delete.id)
     categoryRepository.delete(id)
   }
 }

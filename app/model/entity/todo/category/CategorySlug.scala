@@ -1,3 +1,3 @@
 package model.entity.todo.category
 
-case class CategorySlug(value: String)
+class CategorySlug(val value: String) extends AnyVal

@@ -18,10 +18,10 @@ case class TodoCategoryModel
 
   /** require id is not NULL */
   def category: TodoCategory = TodoCategory(
-    CategoryID(id.get),
-    CategoryName(name),
-    CategorySlug(slug),
-    CategoryColor(color),
+    new CategoryID(id.get),
+    new CategoryName(name),
+    new CategorySlug(slug),
+    new CategoryColor(color),
     createdAt,
     updatedAt,
   )

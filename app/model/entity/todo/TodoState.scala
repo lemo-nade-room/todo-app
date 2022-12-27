@@ -1,6 +1,5 @@
 package model.entity.todo
 
-
 case class TodoState(value: Int) {
 
   private val MIN = 0

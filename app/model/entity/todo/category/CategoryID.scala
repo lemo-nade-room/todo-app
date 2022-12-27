@@ -1,3 +1,3 @@
 package model.entity.todo.category
 
-case class CategoryID(value: Long)
+class CategoryID(val value: Long) extends AnyVal
