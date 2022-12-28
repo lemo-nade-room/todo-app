@@ -6,13 +6,13 @@ import model.TodoCategory.Id
 import scala.concurrent.Future
 import repository.CategoryRepository
 import slick.jdbc.MySQLProfile
-import ixias.persistence.dbio.Execution.Implicits.defaultExecutionContext
+import scala.concurrent.ExecutionContext.Implicits.global
 
 case class DatabaseCategoryRepository() extends CategoryRepository {
 
   private val repository: IxiasCategoryRepository[MySQLProfile.type] = IxiasCategoryRepository()(MySQLProfile)
 
-  override def allWithTodos(): Future[Seq[(Todo#EmbeddedId, TodoCategory#EmbeddedId)]] =
+  override def allWithTodos(): Future[Seq[(Option[Todo#EmbeddedId], TodoCategory#EmbeddedId)]] =
     repository.allWithTodos()
 
   override def create(category: TodoCategory#WithNoId): Future[Unit] =

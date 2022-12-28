@@ -13,10 +13,10 @@ object CategoryContent {
   )
 
   object View {
-    def makeViews(todoAndCategories: Seq[(Todo#EmbeddedId, TodoCategory#EmbeddedId)]): Seq[View] = {
+    def makeViews(todoAndCategories: Seq[(Option[Todo#EmbeddedId], TodoCategory#EmbeddedId)]): Seq[View] = {
       todoAndCategories.groupBy(_._2)
         .map { case (category, categoryTodos) =>
-          View.make(category, categoryTodos.map(_._1))
+          View.make(category, categoryTodos.map(_._1).collect { case Some(v) => v })
         }.toSeq.sortWith(_.name < _.name)
     }
 

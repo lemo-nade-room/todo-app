@@ -1,7 +1,6 @@
 package database.ixiasrepository
 
 import database.SlickResourceProvider
-
 import scala.concurrent.Future
 import slick.jdbc.JdbcProfile
 import ixias.persistence.SlickRepository

@@ -1,7 +1,7 @@
 package database.repository
 
 import database.ixiasrepository.IxiasTodoRepository
-import ixias.persistence.dbio.Execution.Implicits.defaultExecutionContext
+import scala.concurrent.ExecutionContext.Implicits.global
 import model.{Todo, TodoCategory}
 import repository.TodoRepository
 import slick.jdbc.MySQLProfile

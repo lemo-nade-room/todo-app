@@ -22,8 +22,8 @@ libraryDependencies ++= Seq(
   "net.ixias" %% "ixias-play" % "1.1.36",
   "mysql"          % "mysql-connector-java" % "5.1.+",
   "ch.qos.logback" % "logback-classic"      % "1.1.+",
-  "org.scalatest" %% "scalatest" % "2.2.1" % "test",
-  "org.scalatestplus" %% "play" % "1.4.0-M3" % "test",
+//  "org.scalatest" %% "scalatest" % "2.2.1" % "test",
+//  "org.scalatestplus" %% "play" % "1.4.0-M3" % "test",
 )
 // Adds additional packages into Twirl
 //TwirlKeys.templateImports += "com.example.controllers._"

@@ -3,7 +3,6 @@ package database.table
 import ixias.persistence.model.{DataSourceName, Table}
 import model.{TodoCategory, Todo}
 import slick.jdbc.JdbcProfile
-
 import java.time.LocalDateTime
 
 case class TodoTable[P <: JdbcProfile]()(implicit val driver: P) extends Table[Todo, P] {

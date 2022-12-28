@@ -5,7 +5,6 @@ import database.SlickResourceProvider
 import ixias.persistence.SlickRepository
 import model.{Todo, TodoCategory}
 import slick.jdbc.JdbcProfile
-
 import scala.concurrent.Future
 
 case class IxiasCategoryRepository[P <: JdbcProfile] @Inject()(implicit val driver: P)
@@ -14,15 +13,11 @@ case class IxiasCategoryRepository[P <: JdbcProfile] @Inject()(implicit val driv
 
   import api._
 
-  def allWithTodos(): Future[Seq[(Todo#EmbeddedId, TodoCategory#EmbeddedId)]] = {
-    DBAction(TodoCategoryTable, "slave") { case (db, category) =>
-      DBAction(TodoTable, "slave") { case (_, todo) =>
-        db.run {
-          category
-            .join(todo)
-            .on(_.id === _.categoryId)
-            .result
-        }.map(_.map(result => (result._2, result._1)))
+  def allWithTodos(): Future[Seq[(Option[Todo#EmbeddedId], TodoCategory#EmbeddedId)]] = {
+    DBAction(TodoTable, "slave") { case (db, todo) =>
+      DBAction(TodoCategoryTable, "slave") { case (_, category) =>
+        db.run {todo.joinRight(category).on(_.categoryId === _.id).result }
+        .map(_.map { case (t, c) => (t.map(_.toEmbeddedId), c.toEmbeddedId)})
       }
     }
   }
@@ -34,7 +29,7 @@ case class IxiasCategoryRepository[P <: JdbcProfile] @Inject()(implicit val driv
         val categoryDeleteQuery = category.filter(_.id === id).delete
         db.run((todosDeleteQuery andThen categoryDeleteQuery).transactionally)
       }
-    }.map(_ => Unit)
+    }.map(_ => ())
   }
 
   override def get(id: Id): Future[Option[EntityEmbeddedId]] = {
