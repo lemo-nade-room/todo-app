@@ -3,8 +3,8 @@ package controllers
 import form.TodoForm
 import javax.inject._
 import play.api.mvc._
-import ixias.persistence.dbio.Execution.Implicits.defaultExecutionContext
 import repository.TodoRepository
+import scala.concurrent.ExecutionContext.Implicits.global
 
 @Singleton
 class TodoController @Inject()
@@ -18,7 +18,7 @@ class TodoController @Inject()
     TodoForm.createForm.bindFromRequest().fold(
       error => homeController.homeView(BadRequest, error.errors),
       create => {
-        for (_ <- todoRepository.create(create.todo)) yield Redirect("/")
+        for (_ <- todoRepository.create(create.todo)) yield Redirect(routes.HomeController.index())
       }
     )
   }
@@ -27,7 +27,7 @@ class TodoController @Inject()
     TodoForm.updateForm.bindFromRequest().fold(
       error => homeController.homeView(BadRequest, error.errors),
       update => {
-        for (_ <- todoRepository.update(update.todo)) yield Redirect("/")
+        for (_ <- todoRepository.update(update.todo)) yield Redirect(routes.HomeController.index())
       }
     )
   }
@@ -36,7 +36,7 @@ class TodoController @Inject()
     TodoForm.deleteForm.bindFromRequest().fold(
       error => homeController.homeView(BadRequest, error.errors),
       delete => {
-        for (_ <- todoRepository.delete(delete.todoId)) yield Redirect("/")
+        for (_ <- todoRepository.delete(delete.todoId)) yield Redirect(routes.HomeController.index())
       }
     )
   }

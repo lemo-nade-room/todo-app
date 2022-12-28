@@ -1,11 +1,12 @@
 package controllers
 
-import content.{CategoryContent, ViewValueHome}
+import content.CategoryContent
+import model.ViewValueHome
 
 import javax.inject._
 import play.api.mvc._
 import play.api.data.FormError
-import ixias.persistence.dbio.Execution.Implicits.defaultExecutionContext
+import scala.concurrent.ExecutionContext.Implicits.global
 import repository.CategoryRepository
 
 import scala.concurrent.Future
@@ -21,7 +22,7 @@ class HomeController @Inject()
     homeView(Ok)
   }
 
-  def homeView(status: play.api.mvc.Results#Status, errors: Seq[FormError] = Nil): Future[Result] = {
+  private[controllers] def homeView(status: play.api.mvc.Results#Status, errors: Seq[FormError] = Nil): Future[Result] = {
     categoryRepository.allWithTodos().map(categoryWithTodos =>
       status.apply(views.html.Home(
         ViewValueHome(
