@@ -1,31 +1,41 @@
 package controllers
 
 import form.CategoryForm
-
 import javax.inject._
 import play.api.mvc._
-import service.CategoryApplicationService
+import repository.CategoryRepository
 import scala.concurrent.ExecutionContext.Implicits.global
 
 @Singleton
 class CategoryController @Inject()
 (
   val controllerComponents: ControllerComponents,
-  val categoryApplicationService: CategoryApplicationService
+  val categoryRepository: CategoryRepository,
+  val homeController: HomeController,
 ) extends BaseController {
 
   def create: Action[AnyContent] = Action.async { implicit req =>
-    val createCategory = CategoryForm.createForm.bindFromRequest().get
-    for (_ <- categoryApplicationService.create(createCategory)) yield Redirect("/")
+    CategoryForm.createForm.bindFromRequest().fold(
+      error => homeController.homeView(BadRequest, error.errors),
+      create => {
+        for (_ <- categoryRepository.create(create.category)) yield Redirect(routes.HomeController.index())
+      }
+    )
   }
 
   def update: Action[AnyContent] = Action.async { implicit req =>
-    val updateCategory = CategoryForm.updateForm.bindFromRequest().get
-    for (_ <- categoryApplicationService.update(updateCategory)) yield Redirect("/")
+    CategoryForm.updateForm.bindFromRequest().fold(
+      error => homeController.homeView(BadRequest, error.errors),
+      update => {
+        for (_ <- categoryRepository.update(update.category)) yield Redirect(routes.HomeController.index())
+      }
+    )
   }
 
   def delete(): Action[AnyContent] = Action.async { implicit req =>
-    val deleteCategory = CategoryForm.deleteForm.bindFromRequest().get
-    for (_ <- categoryApplicationService.delete(deleteCategory)) yield Redirect("/")
+    CategoryForm.deleteForm.bindFromRequest().fold(
+      error => homeController.homeView(BadRequest, error.errors),
+      delete => for (_ <- categoryRepository.delete(delete.categoryId)) yield Redirect(routes.HomeController.index())
+    )
   }
 }
