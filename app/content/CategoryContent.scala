@@ -1,7 +1,6 @@
 package content
 
-import model.entity.Todo
-import model.entity.todo.TodoCategory
+import model.{Todo, TodoCategory}
 
 object CategoryContent {
   case class View
@@ -14,12 +13,19 @@ object CategoryContent {
   )
 
   object View {
-    def make(category: TodoCategory, todos: Seq[Todo]): View = View (
-      category.id.value,
-      category.name.value,
-      category.slug.value,
-      category.color.value,
-      todos.map(TodoContent.View.make)
+    def makeViews(todoAndCategories: Seq[(Todo#EmbeddedId, TodoCategory#EmbeddedId)]): Seq[View] = {
+      todoAndCategories.groupBy(_._2)
+        .map { case (category, categoryTodos) =>
+          View.make(category, categoryTodos.map(_._1))
+        }.toSeq.sortWith(_.name < _.name)
+    }
+
+    def make(category: TodoCategory#EmbeddedId, todos: Seq[Todo#EmbeddedId]): View = View(
+      id = category.id.longValue(),
+      name = category.v.name,
+      slug = category.v.slug,
+      color = category.v.color,
+      todos = TodoContent.View.makeViews(todos)
     )
   }
 
