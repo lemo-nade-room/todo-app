@@ -16,7 +16,7 @@ case class TodoCategory
 
 object TodoCategory {
 
-  val Id: Identity[Id] = the[Identity[Id]]
+  val Id = the[Identity[Id]]
   type Id = Long @@ TodoCategory
   type WithNoId = Entity.WithNoId[Id, TodoCategory]
   type EmbeddedId = Entity.EmbeddedId[Id, TodoCategory]
