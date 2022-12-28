@@ -1,11 +1,11 @@
 package database.table
 
 import ixias.persistence.model.{DataSourceName, Table}
-import model.TodoCategoryModel
+import model.TodoCategory
 import slick.jdbc.JdbcProfile
 import java.time.LocalDateTime
 
-case class TodoCategoryTable[P <: JdbcProfile]()(implicit val driver: P) extends Table[TodoCategoryModel, P] {
+case class TodoCategoryTable[P <: JdbcProfile]()(implicit val driver: P) extends Table[TodoCategory, P] {
   override lazy val dsn: Map[String, DataSourceName] = Map(
     "master" -> DataSourceName("ixias.db.mysql://master/to_do"),
     "slave" -> DataSourceName("ixias.db.mysql://slave/to_do"),
@@ -19,7 +19,7 @@ case class TodoCategoryTable[P <: JdbcProfile]()(implicit val driver: P) extends
 
   class Table(tag: Tag) extends BasicTable(tag, "to_do_category") {
 
-    import TodoCategoryModel._
+    import TodoCategory._
 
     def id = column[Id]("id", O.PrimaryKey, O.AutoInc)
 
@@ -33,7 +33,7 @@ case class TodoCategoryTable[P <: JdbcProfile]()(implicit val driver: P) extends
 
     def createdAt = column[LocalDateTime]("created_at")
 
-    def * = (id.?, name, slug, color, updatedAt, createdAt) <> ((TodoCategoryModel.apply _).tupled, TodoCategoryModel.unapply)
+    def * = (id.?, name, slug, color, updatedAt, createdAt) <> ((TodoCategory.apply _).tupled, TodoCategory.unapply)
 
   }
 }

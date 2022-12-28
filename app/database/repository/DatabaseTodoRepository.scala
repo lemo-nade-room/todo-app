@@ -1,7 +1,7 @@
 package database.repository
 
 import database.ixiasrepository.IxiasTodoRepository
-import model.TodoModel
+import model.Todo
 import model.entity.Todo
 import model.entity.todo.{TodoBody, TodoCategory, TodoID, TodoState, TodoTitle}
 import repository.TodoRepository
@@ -20,13 +20,13 @@ case class DatabaseTodoRepository() extends TodoRepository {
    * @return 作成されたTodoのID
    */
   override def create(title: TodoTitle, body: TodoBody, state: TodoState, category: TodoCategory): Future[TodoID] = {
-    val newTodoModel = TodoModel.build(category.id, title, body, state)
+    val newTodoModel = Todo.build(category.id, title, body, state)
     for (id <- repository.add(newTodoModel)) yield new TodoID(id.longValue())
   }
 
   /** Todoの内容を上書きする */
   override def update(id: TodoID, title: TodoTitle, body: TodoBody, state: TodoState, category: TodoCategory): Future[Unit] = {
-    val newTodo = TodoModel.build(id, category.id, title, body, state)
+    val newTodo = Todo.build(id, category.id, title, body, state)
     repository.update(newTodo).map(_ => Unit)
   }
 
@@ -34,7 +34,7 @@ case class DatabaseTodoRepository() extends TodoRepository {
   override def all(): Future[Seq[Todo]] = repository.all()
 
   override def delete(id: TodoID): Future[Unit] = {
-    repository.remove(TodoModel.id(id)).map(_ => Unit)
+    repository.remove(Todo.id(id)).map(_ => Unit)
   }
 
   override def find(id: TodoID): Future[Option[Todo]] = repository.find(id)

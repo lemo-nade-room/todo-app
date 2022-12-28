@@ -1,22 +1,22 @@
 package database.ixiasrepository
 
-import database.{SlickResourceProvider}
+import database.SlickResourceProvider
 
 import scala.concurrent.Future
 import slick.jdbc.JdbcProfile
 import ixias.persistence.SlickRepository
-import model.TodoModel
+import model.Todo
 import model.entity.Todo
 import model.entity.todo.{TodoBody, TodoCategory, TodoID, TodoState, TodoTitle}
 
 case class IxiasTodoRepository[P <: JdbcProfile]()(implicit val driver: P)
-  extends SlickRepository[TodoModel.Id, TodoModel, P]
+  extends SlickRepository[Todo.Id, Todo, P]
     with SlickResourceProvider[P] {
 
   import api._
 
   def create(title: TodoTitle, body: TodoBody, state: TodoState, category: TodoCategory): Future[TodoID] = {
-    val newTodoModel = TodoModel.build(category.id, title, body, state)
+    val newTodoModel = Todo.build(category.id, title, body, state)
     for (id <- add(newTodoModel)) yield new TodoID(id.longValue())
   }
 
@@ -43,7 +43,7 @@ case class IxiasTodoRepository[P <: JdbcProfile]()(implicit val driver: P)
           todo
             .join(category)
             .on(_.categoryId === _.id)
-            .filter(_._1.id === TodoModel.id(id))
+            .filter(_._1.id === Todo.id(id))
             .result
             .headOption
         }.map(_.map(tuple => {

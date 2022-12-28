@@ -1,11 +1,11 @@
 package model
 
 import ixias.model._
-import model.TodoCategoryModel._
+import model.TodoCategory._
 
 import java.time.LocalDateTime
 
-case class TodoCategoryModel
+case class TodoCategory
 (
   id: Option[Id],
   name: String,
@@ -26,19 +26,19 @@ case class TodoCategoryModel
   )
 }
 
-object TodoCategoryModel {
+object TodoCategory {
 
   val Id: Identity[Id] = the[Identity[Id]]
-  type Id = Long @@ TodoCategoryModel
-  type WithNoId = Entity.WithNoId[Id, TodoCategoryModel]
-  type EmbeddedId = Entity.EmbeddedId[Id, TodoCategoryModel]
+  type Id = Long @@ TodoCategory
+  type WithNoId = Entity.WithNoId[Id, TodoCategory]
+  type EmbeddedId = Entity.EmbeddedId[Id, TodoCategory]
 
   def build(name: CategoryName, slug: CategorySlug, color: CategoryColor): WithNoId = Entity.WithNoId(
-    TodoCategoryModel(None, name.value, slug.value, color.value)
+    TodoCategory(None, name.value, slug.value, color.value)
   )
 
   def build(id: CategoryID, name: CategoryName, slug: CategorySlug, color: CategoryColor): EmbeddedId = Entity.EmbeddedId(
-    TodoCategoryModel(Some(this.id(id)), name.value, slug.value, color.value)
+    TodoCategory(Some(this.id(id)), name.value, slug.value, color.value)
   )
 
   def id(categoryID: CategoryID): Id = Id(categoryID.value.asInstanceOf[Id.U])

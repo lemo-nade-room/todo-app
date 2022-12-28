@@ -1,16 +1,16 @@
 package database.ixiasrepository
 
 import com.google.inject.Inject
-import database.{SlickResourceProvider}
+import database.SlickResourceProvider
 import ixias.persistence.SlickRepository
-import model.TodoCategoryModel
+import model.TodoCategory
 import model.entity.todo.TodoCategory
 import model.entity.todo.category.CategoryID
 import slick.jdbc.JdbcProfile
 import scala.concurrent.Future
 
 case class IxiasCategoryRepository[P <: JdbcProfile] @Inject()(implicit val driver: P)
-    extends SlickRepository[TodoCategoryModel.Id, TodoCategoryModel, P]
+    extends SlickRepository[TodoCategory.Id, TodoCategory, P]
     with SlickResourceProvider[P] {
 
   import api._
@@ -26,7 +26,7 @@ case class IxiasCategoryRepository[P <: JdbcProfile] @Inject()(implicit val driv
   def delete(id: CategoryID): Future[Unit] = {
     DBAction(TodoCategoryTable, "master") { case (db, category) =>
       DBAction(TodoTable, "master") { case (_, todo) =>
-        val categoryModelID = TodoCategoryModel.id(id)
+        val categoryModelID = TodoCategory.id(id)
         val todosDeleteQuery = todo.filter(_.categoryId === categoryModelID).delete
         val categoryDeleteQuery = category.filter(_.id === categoryModelID).delete
         db.run((todosDeleteQuery andThen categoryDeleteQuery).transactionally)

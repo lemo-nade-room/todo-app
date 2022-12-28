@@ -1,7 +1,7 @@
 package database.repository
 
 import database.ixiasrepository.IxiasCategoryRepository
-import model.TodoCategoryModel
+import model.TodoCategory
 import model.database.TodoCategoryModel
 
 import scala.concurrent.Future
@@ -27,12 +27,12 @@ case class DatabaseCategoryRepository() extends CategoryRepository {
    * @return 作成されたカテゴリのID
    */
   override def create(name: CategoryName, slug: CategorySlug, color: CategoryColor): Future[CategoryID] = {
-    val newCategoryModel = TodoCategoryModel.build(name, slug, color)
+    val newCategoryModel = TodoCategory.build(name, slug, color)
     for (id <- repository.add(newCategoryModel)) yield new CategoryID(id.longValue())
   }
 
   override def update(id: CategoryID, name: CategoryName, slug: CategorySlug, color: CategoryColor): Future[Unit] = {
-    val newCategory = TodoCategoryModel.build(id, name, slug, color)
+    val newCategory = TodoCategory.build(id, name, slug, color)
     repository.update(newCategory).map(_ => Unit)
   }
 
@@ -41,7 +41,7 @@ case class DatabaseCategoryRepository() extends CategoryRepository {
 
   /** 指定されたカテゴリIDのカテゴリ */
   override def find(id: CategoryID): Future[Option[TodoCategory]] = {
-    repository.get(TodoCategoryModel.id(id)).map(_.map(_.v.category))
+    repository.get(TodoCategory.id(id)).map(_.map(_.v.category))
   }
 
 }

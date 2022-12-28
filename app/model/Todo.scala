@@ -2,14 +2,14 @@ package model
 
 import ixias.model._
 import ixias.util.EnumStatus
-import model.TodoModel._
+import model.Todo._
 
 import java.time.LocalDateTime
 
-case class TodoModel
+case class Todo
 (
   id: Option[Id],
-  category: TodoCategoryModel.Id,
+  category: TodoCategory.Id,
   title: String,
   body: String,
   state: State,
@@ -33,12 +33,12 @@ case class TodoModel
 }
 
 
-object TodoModel {
+object Todo {
 
   val Id: Identity[Id] = the[Identity[Id]]
-  type Id = Long @@ TodoModel
-  type WithNoId = Entity.WithNoId[Id, TodoModel]
-  type EmbeddedId = Entity.EmbeddedId[Id, TodoModel]
+  type Id = Long @@ Todo
+  type WithNoId = Entity.WithNoId[Id, Todo]
+  type EmbeddedId = Entity.EmbeddedId[Id, Todo]
 
   sealed abstract class State(val code: Short) extends EnumStatus
 
@@ -55,11 +55,11 @@ object TodoModel {
   }
 
   def build(categoryId: CategoryID, title: TodoTitle, body: TodoBody, state: TodoState): WithNoId = Entity.WithNoId(
-    TodoModel(None, TodoCategoryModel.id(categoryId), title.value, body.value, State.of(state))
+    Todo(None, TodoCategory.id(categoryId), title.value, body.value, State.of(state))
   )
 
   def build(id: TodoID, categoryId: CategoryID, title: TodoTitle, body: TodoBody, state: TodoState): EmbeddedId = Entity.EmbeddedId(
-    TodoModel(Some(this.id(id)), TodoCategoryModel.Id(categoryId.value.asInstanceOf[TodoCategoryModel.Id.U]), title.value, body.value, State.of(state))
+    Todo(Some(this.id(id)), TodoCategory.Id(categoryId.value.asInstanceOf[TodoCategory.Id.U]), title.value, body.value, State.of(state))
   )
 
   def id(id: TodoID): Id = Id(id.value.asInstanceOf[Id.U])
