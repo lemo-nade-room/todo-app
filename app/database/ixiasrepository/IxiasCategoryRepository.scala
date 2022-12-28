@@ -3,32 +3,36 @@ package database.ixiasrepository
 import com.google.inject.Inject
 import database.SlickResourceProvider
 import ixias.persistence.SlickRepository
-import model.TodoCategory
-import model.entity.todo.TodoCategory
-import model.entity.todo.category.CategoryID
+import model.{Todo, TodoCategory}
+import repository.CategoryRepository
 import slick.jdbc.JdbcProfile
+
 import scala.concurrent.Future
 
 case class IxiasCategoryRepository[P <: JdbcProfile] @Inject()(implicit val driver: P)
-    extends SlickRepository[TodoCategory.Id, TodoCategory, P]
+  extends SlickRepository[TodoCategory.Id, TodoCategory, P]
     with SlickResourceProvider[P] {
 
   import api._
 
-  def all(): Future[Seq[TodoCategory]] = {
-    RunDBAction(TodoCategoryTable, "slave") {
-      _.result
-    } {
-      _.map(_.category)
+  def all(): Future[Seq[(Todo#EmbeddedId, TodoCategory#EmbeddedId)]] = {
+    DBAction(TodoCategoryTable, "slave") { case (db, category) =>
+      DBAction(TodoTable, "slave") { case (_, todo) =>
+        db.run {
+          category
+            .join(todo)
+            .on(_.id === _.categoryId)
+            .result
+        }.map(_.map(result => (result._2, result._1)))
+      }
     }
   }
 
-  def delete(id: CategoryID): Future[Unit] = {
+  def delete(id: Id): Future[Unit] = {
     DBAction(TodoCategoryTable, "master") { case (db, category) =>
       DBAction(TodoTable, "master") { case (_, todo) =>
-        val categoryModelID = TodoCategory.id(id)
-        val todosDeleteQuery = todo.filter(_.categoryId === categoryModelID).delete
-        val categoryDeleteQuery = category.filter(_.id === categoryModelID).delete
+        val todosDeleteQuery = todo.filter(_.categoryId === id).delete
+        val categoryDeleteQuery = category.filter(_.id === id).delete
         db.run((todosDeleteQuery andThen categoryDeleteQuery).transactionally)
       }
     }.map(_ => Unit)
@@ -47,12 +51,15 @@ case class IxiasCategoryRepository[P <: JdbcProfile] @Inject()(implicit val driv
   }
 
   override def update(entity: EntityEmbeddedId): Future[Option[EntityEmbeddedId]] = {
-    RunDBAction(TodoCategoryTable, "master") { t =>
-      t.filter(_.id === entity.id)
-        .update(entity.v)
-    }
-    RunDBAction(TodoCategoryTable, "slave") { t =>
-      t.filter(_.id === entity.id).result.headOption
+    RunDBAction(TodoCategoryTable) { slick =>
+      val row = slick.filter(_.id === entity.id)
+      for {
+        old <- row.result.headOption
+        _ <- old match {
+          case None => DBIO.successful(0)
+          case Some(_) => row.update(entity.v)
+        }
+      } yield old
     }
   }
 

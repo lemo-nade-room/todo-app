@@ -5,9 +5,7 @@ import database.SlickResourceProvider
 import scala.concurrent.Future
 import slick.jdbc.JdbcProfile
 import ixias.persistence.SlickRepository
-import model.Todo
-import model.entity.Todo
-import model.entity.todo.{TodoBody, TodoCategory, TodoID, TodoState, TodoTitle}
+import model.{Todo, TodoCategory}
 
 case class IxiasTodoRepository[P <: JdbcProfile]()(implicit val driver: P)
   extends SlickRepository[Todo.Id, Todo, P]
@@ -15,49 +13,17 @@ case class IxiasTodoRepository[P <: JdbcProfile]()(implicit val driver: P)
 
   import api._
 
-  def create(title: TodoTitle, body: TodoBody, state: TodoState, category: TodoCategory): Future[TodoID] = {
-    val newTodoModel = Todo.build(category.id, title, body, state)
-    for (id <- add(newTodoModel)) yield new TodoID(id.longValue())
+  def all(): Future[Seq[EntityEmbeddedId]] = RunDBAction(TodoTable, "slave") { t =>
+    t.result
   }
 
-  def all(): Future[Seq[Todo]] = {
-    DBAction(TodoTable, "slave") { case (db, todo) =>
-      DBAction(TodoCategoryTable, "slave") { case (_, category) =>
-        db.run {
-          todo
-            .join(category)
-            .on(_.categoryId === _.id)
-            .result
-        }.map(_.map(tuple => {
-          val (todoModel, categoryModel) = tuple
-          todoModel.todo(categoryModel.category)
-        }))
-      }
-    }
-  }
-
-  def find(id: TodoID): Future[Option[Todo]] = {
-    DBAction(TodoTable, "slave") { case (db, todo) =>
-      DBAction(TodoCategoryTable, "slave") { case (_, category) =>
-        db.run {
-          todo
-            .join(category)
-            .on(_.categoryId === _.id)
-            .filter(_._1.id === Todo.id(id))
-            .result
-            .headOption
-        }.map(_.map(tuple => {
-          val (todoModel, categoryModel) = tuple
-          todoModel.todo(categoryModel.category)
-        }))
-      }
-    }
+  def all(categoryId: TodoCategory.Id): Future[Seq[EntityEmbeddedId]] = RunDBAction(TodoTable, "slave") { t =>
+    t.filter(_.categoryId === categoryId).result
   }
 
   def get(id: Id): Future[Option[EntityEmbeddedId]] =
-    RunDBAction(TodoTable, "slave") {
-      _
-        .filter(_.id === id)
+    RunDBAction(TodoTable, "slave") { t =>
+      t.filter(_.id === id)
         .result.headOption
     }
 
