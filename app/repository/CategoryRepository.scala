@@ -2,32 +2,19 @@ package repository
 
 import com.google.inject.ImplementedBy
 import database.repository.DatabaseCategoryRepository
-import model.entity.todo.TodoCategory
-import model.entity.todo.category.{CategoryColor, CategoryID, CategoryName, CategorySlug}
-
+import model.{Todo, TodoCategory}
 import scala.concurrent.Future
 
 @ImplementedBy(classOf[DatabaseCategoryRepository])
 trait CategoryRepository {
-  /**
-   * @return 全てのカテゴリ
-   */
-  def all(): Future[Seq[TodoCategory]]
+  /** @return 全てのカテゴリとTodo */
+  def all(): Future[Seq[(Todo#EmbeddedId, TodoCategory#EmbeddedId)]]
 
-  /**
-   * カテゴリの新規作成
-   *
-   * @return 作成されたカテゴリのID
-   */
-  def create(name: CategoryName, slug: CategorySlug, color: CategoryColor): Future[CategoryID]
+  def create(category: TodoCategory#WithNoId): Future[Unit]
 
-  def update(id: CategoryID, name: CategoryName, slug: CategorySlug, color: CategoryColor): Future[Unit]
+  def update(category: TodoCategory#EmbeddedId): Future[Unit]
 
   /** 指定されたカテゴリIDのカテゴリをそのカテゴリに所属するTODOごと削除 */
-  def delete(id: CategoryID): Future[Unit]
-
-  /** 指定されたカテゴリIDのカテゴリ */
-  def find(id: CategoryID): Future[Option[TodoCategory]]
-
+  def delete(id: TodoCategory.Id): Future[Unit]
 
 }
