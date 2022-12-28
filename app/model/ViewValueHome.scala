@@ -1,5 +1,6 @@
-package content
+package model
 
+import content.CategoryContent
 import play.api.data.FormError
 
 // Topページのviewvalue
