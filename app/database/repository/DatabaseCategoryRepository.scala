@@ -12,8 +12,8 @@ case class DatabaseCategoryRepository() extends CategoryRepository {
 
   private val repository: IxiasCategoryRepository[MySQLProfile.type] = IxiasCategoryRepository()(MySQLProfile)
 
-  override def all(): Future[Seq[(Todo#EmbeddedId, TodoCategory#EmbeddedId)]] =
-    repository.all()
+  override def allWithTodos(): Future[Seq[(Todo#EmbeddedId, TodoCategory#EmbeddedId)]] =
+    repository.allWithTodos()
 
   override def create(category: TodoCategory#WithNoId): Future[Unit] =
     repository.add(category).map(_ => ())

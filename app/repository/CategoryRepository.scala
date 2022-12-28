@@ -8,7 +8,7 @@ import scala.concurrent.Future
 @ImplementedBy(classOf[DatabaseCategoryRepository])
 trait CategoryRepository {
   /** @return 全てのカテゴリとTodo */
-  def all(): Future[Seq[(Todo#EmbeddedId, TodoCategory#EmbeddedId)]]
+  def allWithTodos(): Future[Seq[(Todo#EmbeddedId, TodoCategory#EmbeddedId)]]
 
   def create(category: TodoCategory#WithNoId): Future[Unit]
 

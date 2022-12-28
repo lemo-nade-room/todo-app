@@ -2,7 +2,6 @@ package model
 
 import ixias.model._
 import model.TodoCategory._
-
 import java.time.LocalDateTime
 
 case class TodoCategory
@@ -13,18 +12,7 @@ case class TodoCategory
   color: Int,
   updatedAt: LocalDateTime = NOW,
   createdAt: LocalDateTime = NOW
-) extends EntityModel[Id] {
-
-  /** require id is not NULL */
-  def category: TodoCategory = TodoCategory(
-    new CategoryID(id.get),
-    new CategoryName(name),
-    new CategorySlug(slug),
-    new CategoryColor(color),
-    createdAt,
-    updatedAt,
-  )
-}
+) extends EntityModel[Id]
 
 object TodoCategory {
 
@@ -33,13 +21,11 @@ object TodoCategory {
   type WithNoId = Entity.WithNoId[Id, TodoCategory]
   type EmbeddedId = Entity.EmbeddedId[Id, TodoCategory]
 
-  def build(name: CategoryName, slug: CategorySlug, color: CategoryColor): WithNoId = Entity.WithNoId(
-    TodoCategory(None, name.value, slug.value, color.value)
+  def withNoId(name: String, slug: String, color: Int): WithNoId = Entity.WithNoId(
+    TodoCategory(None, name, slug, color)
   )
 
-  def build(id: CategoryID, name: CategoryName, slug: CategorySlug, color: CategoryColor): EmbeddedId = Entity.EmbeddedId(
-    TodoCategory(Some(this.id(id)), name.value, slug.value, color.value)
+  def embeddedId(id: Id, name: String, slug: String, color: Int): EmbeddedId = Entity.EmbeddedId(
+    TodoCategory(Some(id), name, slug, color)
   )
-
-  def id(categoryID: CategoryID): Id = Id(categoryID.value.asInstanceOf[Id.U])
 }

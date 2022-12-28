@@ -1,6 +1,7 @@
 package content
 
-import model.Todo
+import model.Todo.Id
+import model.{Todo, TodoCategory}
 
 object TodoContent {
   case class View
@@ -24,7 +25,14 @@ object TodoContent {
       .map(View.make)
   }
 
-  case class Create(title: String, body: String, categoryId: Long)
+  case class Create(title: String, body: String, categoryId: Long) {
+    def todo: Todo#WithNoId = Todo.withNoId(
+      TodoCategory.Id(categoryId.asInstanceOf[TodoCategory.Id.U]),
+      title,
+      body,
+      Todo.State.PENDING
+    )
+  }
 
   case class Update
   (
@@ -33,7 +41,17 @@ object TodoContent {
     body: String,
     state: Int,
     categoryId: Long,
-  )
+  ) {
+    def todo: Todo#EmbeddedId = Todo.embeddedId(
+      Todo.Id(todoId.asInstanceOf[Todo.Id.U]),
+      TodoCategory.Id(categoryId.asInstanceOf[TodoCategory.Id.U]),
+      title,
+      body,
+      Todo.State.of(state)
+    )
+  }
 
-  case class Delete(id: Long)
+  case class Delete(id: Long) {
+    def todoId: Id = Todo.Id(id.asInstanceOf[Todo.Id.U])
+  }
 }

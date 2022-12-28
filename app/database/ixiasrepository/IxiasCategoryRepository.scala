@@ -4,7 +4,6 @@ import com.google.inject.Inject
 import database.SlickResourceProvider
 import ixias.persistence.SlickRepository
 import model.{Todo, TodoCategory}
-import repository.CategoryRepository
 import slick.jdbc.JdbcProfile
 
 import scala.concurrent.Future
@@ -15,7 +14,7 @@ case class IxiasCategoryRepository[P <: JdbcProfile] @Inject()(implicit val driv
 
   import api._
 
-  def all(): Future[Seq[(Todo#EmbeddedId, TodoCategory#EmbeddedId)]] = {
+  def allWithTodos(): Future[Seq[(Todo#EmbeddedId, TodoCategory#EmbeddedId)]] = {
     DBAction(TodoCategoryTable, "slave") { case (db, category) =>
       DBAction(TodoTable, "slave") { case (_, todo) =>
         db.run {

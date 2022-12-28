@@ -3,7 +3,6 @@ package model
 import ixias.model._
 import ixias.util.EnumStatus
 import model.Todo._
-
 import java.time.LocalDateTime
 
 case class Todo
@@ -15,23 +14,7 @@ case class Todo
   state: State,
   updatedAt: LocalDateTime = NOW,
   createdAt: LocalDateTime = NOW
-) extends EntityModel[Id] {
-
-  /** require id is not NULL */
-  def todo(category: TodoCategory): Todo = {
-    Todo(
-      new TodoID(id.get),
-      category,
-      new TodoTitle(title),
-      new TodoBody(body),
-      TodoState(state.code),
-      createdAt,
-      updatedAt,
-    )
-  }
-
-}
-
+) extends EntityModel[Id]
 
 object Todo {
 
@@ -49,18 +32,18 @@ object Todo {
 
     case object DONE extends State(2)
 
-    def of(state: TodoState): State = {
-      State.values.filter(_.code.toInt == state.value).head
+    def of(value: Int): State = values.find(_.code.toInt == value) match {
+      case Some(v) => v
+      case None => throw new IllegalArgumentException(s"Stateが${value}で初期化された")
     }
   }
 
-  def build(categoryId: CategoryID, title: TodoTitle, body: TodoBody, state: TodoState): WithNoId = Entity.WithNoId(
-    Todo(None, TodoCategory.id(categoryId), title.value, body.value, State.of(state))
+  def withNoId(categoryId: TodoCategory.Id, title: String, body: String, state: State): WithNoId = Entity.WithNoId(
+    Todo(None, categoryId, title, body, state)
   )
 
-  def build(id: TodoID, categoryId: CategoryID, title: TodoTitle, body: TodoBody, state: TodoState): EmbeddedId = Entity.EmbeddedId(
-    Todo(Some(this.id(id)), TodoCategory.Id(categoryId.value.asInstanceOf[TodoCategory.Id.U]), title.value, body.value, State.of(state))
+  def embeddedId(id: Id, categoryId: TodoCategory.Id, title: String, body: String, state: State): EmbeddedId = Entity.EmbeddedId(
+    Todo(Some(id), categoryId, title, body, state)
   )
 
-  def id(id: TodoID): Id = Id(id.value.asInstanceOf[Id.U])
 }

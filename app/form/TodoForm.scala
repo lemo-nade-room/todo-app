@@ -3,6 +3,7 @@ package form
 import play.api.data.Form
 import play.api.data.Forms.{longNumber, mapping, number, text}
 import validation.TodoValidation
+import content.TodoContent._
 
 object TodoForm {
   lazy val createForm: Form[Create] = Form(mapping(

@@ -29,9 +29,17 @@ object CategoryContent {
     )
   }
 
-  case class Create(name: String, slug: String, color: Int)
+  case class Create(name: String, slug: String, color: Int) {
+    def category: TodoCategory#WithNoId = TodoCategory.withNoId(name, slug, color)
+  }
 
-  case class Update(id: Long, name: String, slug: String, color: Int)
+  case class Update(id: Long, name: String, slug: String, color: Int) {
+    def category: TodoCategory#EmbeddedId = TodoCategory.embeddedId(
+      TodoCategory.Id(id.asInstanceOf[TodoCategory.Id.U]), name, slug, color
+    )
+  }
 
-  case class Delete(id: Long)
+  case class Delete(id: Long) {
+    def categoryId: TodoCategory.Id = TodoCategory.Id(id.asInstanceOf[TodoCategory.Id.U])
+  }
 }

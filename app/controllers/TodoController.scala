@@ -3,22 +3,22 @@ package controllers
 import form.TodoForm
 import javax.inject._
 import play.api.mvc._
-import service.TodoApplicationService
-import scala.concurrent.ExecutionContext.Implicits.global
+import ixias.persistence.dbio.Execution.Implicits.defaultExecutionContext
+import repository.TodoRepository
 
 @Singleton
 class TodoController @Inject()
 (
   val controllerComponents: ControllerComponents,
-  val todoApplicationService: TodoApplicationService,
+  var todoRepository: TodoRepository,
   val homeController: HomeController,
 ) extends BaseController {
 
   def create: Action[AnyContent] = Action.async { implicit req =>
     TodoForm.createForm.bindFromRequest().fold(
       error => homeController.homeView(BadRequest, error.errors),
-      createTodo => {
-        for (_ <- todoApplicationService.create(createTodo)) yield Redirect("/")
+      create => {
+        for (_ <- todoRepository.create(create.todo)) yield Redirect("/")
       }
     )
   }
@@ -26,8 +26,8 @@ class TodoController @Inject()
   def update: Action[AnyContent] = Action.async { implicit req =>
     TodoForm.updateForm.bindFromRequest().fold(
       error => homeController.homeView(BadRequest, error.errors),
-      updateTodo => {
-        for (_ <- todoApplicationService.update(updateTodo)) yield Redirect("/")
+      update => {
+        for (_ <- todoRepository.update(update.todo)) yield Redirect("/")
       }
     )
   }
@@ -35,8 +35,8 @@ class TodoController @Inject()
   def delete(): Action[AnyContent] = Action.async { implicit req =>
     TodoForm.deleteForm.bindFromRequest().fold(
       error => homeController.homeView(BadRequest, error.errors),
-      deleteTodo => {
-        for (_ <- todoApplicationService.delete(deleteTodo)) yield Redirect("/")
+      delete => {
+        for (_ <- todoRepository.delete(delete.todoId)) yield Redirect("/")
       }
     )
   }
