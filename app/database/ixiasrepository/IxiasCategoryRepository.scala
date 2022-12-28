@@ -1,9 +1,9 @@
-package model.database.ixiasrepository
+package database.ixiasrepository
 
 import com.google.inject.Inject
+import database.{SlickResourceProvider}
 import ixias.persistence.SlickRepository
-import model.database.SlickResourceProvider
-import model.database.ixiasmodel.TodoCategoryModel
+import model.TodoCategoryModel
 import model.entity.todo.TodoCategory
 import model.entity.todo.category.CategoryID
 import slick.jdbc.JdbcProfile

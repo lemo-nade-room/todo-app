@@ -1,10 +1,11 @@
-package model.database.ixiasrepository
+package database.ixiasrepository
+
+import database.{SlickResourceProvider}
 
 import scala.concurrent.Future
 import slick.jdbc.JdbcProfile
 import ixias.persistence.SlickRepository
-import model.database.SlickResourceProvider
-import model.database.ixiasmodel.TodoModel
+import model.TodoModel
 import model.entity.Todo
 import model.entity.todo.{TodoBody, TodoCategory, TodoID, TodoState, TodoTitle}
 

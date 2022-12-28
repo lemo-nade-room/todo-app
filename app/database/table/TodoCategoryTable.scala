@@ -1,7 +1,7 @@
-package model.database.table
+package database.table
 
 import ixias.persistence.model.{DataSourceName, Table}
-import model.database.ixiasmodel.TodoCategoryModel
+import model.TodoCategoryModel
 import slick.jdbc.JdbcProfile
 import java.time.LocalDateTime
 

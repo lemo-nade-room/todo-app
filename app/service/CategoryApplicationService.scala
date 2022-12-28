@@ -1,9 +1,9 @@
 package service
 
 import com.google.inject.{ImplementedBy, Inject}
-import model.content.CategoryContent
+import content.CategoryContent
 import model.entity.todo.category.{CategoryColor, CategoryID, CategoryName, CategorySlug}
-import model.repository.{CategoryRepository, TodoRepository}
+import repository.{CategoryRepository, TodoRepository}
 import java.util.concurrent.TimeUnit
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.Duration

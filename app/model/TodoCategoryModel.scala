@@ -1,9 +1,8 @@
-package model.database.ixiasmodel
+package model
 
 import ixias.model._
-import model.database.ixiasmodel.TodoCategoryModel._
-import model.entity.todo.TodoCategory
-import model.entity.todo.category.{CategoryColor, CategoryID, CategoryName, CategorySlug}
+import model.TodoCategoryModel._
+
 import java.time.LocalDateTime
 
 case class TodoCategoryModel

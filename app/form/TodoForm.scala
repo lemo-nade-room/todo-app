@@ -1,6 +1,5 @@
 package form
 
-import model.content.TodoContent.{Create, Update, Delete}
 import play.api.data.Form
 import play.api.data.Forms.{longNumber, mapping, number, text}
 import validation.TodoValidation

@@ -1,11 +1,9 @@
-package model.database.ixiasmodel
+package model
 
 import ixias.model._
 import ixias.util.EnumStatus
-import model.database.ixiasmodel.TodoModel._
-import model.entity.Todo
-import model.entity.todo.category.CategoryID
-import model.entity.todo.{TodoBody, TodoCategory, TodoID, TodoState, TodoTitle}
+import model.TodoModel._
+
 import java.time.LocalDateTime
 
 case class TodoModel

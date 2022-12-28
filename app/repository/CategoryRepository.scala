@@ -1,7 +1,7 @@
-package model.repository
+package repository
 
 import com.google.inject.ImplementedBy
-import model.database.repository.DatabaseCategoryRepository
+import database.repository.DatabaseCategoryRepository
 import model.entity.todo.TodoCategory
 import model.entity.todo.category.{CategoryColor, CategoryID, CategoryName, CategorySlug}
 

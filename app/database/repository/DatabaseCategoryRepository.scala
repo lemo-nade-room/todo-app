@@ -1,13 +1,15 @@
-package model.database.repository
+package database.repository
 
-import model.database.ixiasmodel.TodoCategoryModel
+import database.ixiasrepository.IxiasCategoryRepository
+import model.TodoCategoryModel
+import model.database.TodoCategoryModel
 
 import scala.concurrent.Future
-import model.database.ixiasrepository.IxiasCategoryRepository
 import model.entity.todo.TodoCategory
 import model.entity.todo.category.{CategoryColor, CategoryID, CategoryName, CategorySlug}
-import model.repository.CategoryRepository
+import repository.CategoryRepository
 import slick.jdbc.MySQLProfile
+
 import scala.concurrent.ExecutionContext.Implicits.global
 
 case class DatabaseCategoryRepository() extends CategoryRepository {

@@ -1,11 +1,12 @@
-package model.database.repository
+package database.repository
 
-import model.database.ixiasmodel.TodoModel
-import model.database.ixiasrepository.IxiasTodoRepository
-import model.repository.TodoRepository
+import database.ixiasrepository.IxiasTodoRepository
+import model.TodoModel
 import model.entity.Todo
 import model.entity.todo.{TodoBody, TodoCategory, TodoID, TodoState, TodoTitle}
+import repository.TodoRepository
 import slick.jdbc.MySQLProfile
+
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 

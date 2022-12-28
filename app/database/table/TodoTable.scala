@@ -1,8 +1,9 @@
-package model.database.table
+package database.table
 
 import ixias.persistence.model.{DataSourceName, Table}
-import model.database.ixiasmodel.{TodoCategoryModel, TodoModel}
+import model.{TodoCategoryModel, TodoModel}
 import slick.jdbc.JdbcProfile
+
 import java.time.LocalDateTime
 
 case class TodoTable[P <: JdbcProfile]()(implicit val driver: P) extends Table[TodoModel, P] {

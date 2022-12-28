@@ -1,8 +1,8 @@
 package controllers
 
+import content.ViewValueHome
 import javax.inject._
 import play.api.mvc._
-import model.ViewValueHome
 import play.api.data.FormError
 import service.CategoryApplicationService
 import scala.concurrent.ExecutionContext.Implicits.global

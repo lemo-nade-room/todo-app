@@ -1,4 +1,4 @@
-package model.content
+package content
 
 import model.entity.Todo
 import model.entity.todo.TodoCategory

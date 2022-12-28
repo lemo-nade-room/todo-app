@@ -1,6 +1,6 @@
-package model.database
+package database
 
-import model.database.table.{TodoCategoryTable, TodoTable}
+import database.table.{TodoCategoryTable, TodoTable}
 import slick.jdbc.JdbcProfile
 
 trait SlickResourceProvider[P <: JdbcProfile] {
