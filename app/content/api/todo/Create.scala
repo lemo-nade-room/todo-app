@@ -1,15 +1,19 @@
 package content.api.todo
 
+import ixias.util.json.JsonEnvReads
 import model.{Todo, TodoCategory}
 import play.api.libs.json.{Json, Reads}
 
-case class CreateTodo(categoryId: Long, title: String, body: String) {
+/* implicitが必要 */
+import content.api.Utility._
+
+case class CreateTodo(categoryId: TodoCategory.Id, title: String, body: String) {
   def value: Todo#WithNoId = Todo.withNoId(
-    TodoCategory.Id(categoryId.asInstanceOf[TodoCategory.Id.U]), title, body, Todo.State.PENDING
+    categoryId, title, body, Todo.State.PENDING
   )
 }
 
-object CreateTodo {
+private object CreateTodo extends JsonEnvReads {
   implicit val reads: Reads[CreateTodo] = Json.reads[CreateTodo]
 }
 

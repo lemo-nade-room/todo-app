@@ -3,13 +3,16 @@ package content.api.todo
 import model.{Todo, TodoCategory}
 import play.api.libs.json.{Json, Reads}
 
-case class UpdateTodo(id: Long, categoryId: Long, title: String, body: String, state: Short) {
+/* implicitが必要 */
+import content.api.Utility._
+
+case class UpdateTodo(id: Todo.Id, categoryId: TodoCategory.Id, title: String, body: String, state: Short) {
   def value: Todo#EmbeddedId = Todo.embeddedId(
-    Todo.Id(id.asInstanceOf[Todo.Id.U]),
-    TodoCategory.Id(categoryId.asInstanceOf[TodoCategory.Id.U]),
+    id,
+    categoryId,
     title,
     body,
-    Todo.State.of(state)
+    Todo.State.of(state),
   )
 }
 
