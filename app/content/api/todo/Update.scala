@@ -6,13 +6,13 @@ import play.api.libs.json.{Json, Reads}
 /* implicitが必要 */
 import content.api.Utility._
 
-case class UpdateTodo(id: Todo.Id, categoryId: TodoCategory.Id, title: String, body: String, state: Short) {
+case class UpdateTodo(id: Todo.Id, categoryId: TodoCategory.Id, title: String, body: String, state: Todo.State) {
   def value: Todo#EmbeddedId = Todo.embeddedId(
     id,
     categoryId,
     title,
     body,
-    Todo.State.of(state),
+    state
   )
 }
 

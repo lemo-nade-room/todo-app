@@ -3,6 +3,9 @@ package content.api
 import model.TodoCategory
 import play.api.libs.json.{Format, Json, OWrites, Reads}
 
+/* implicitが必要 */
+import content.api.Utility._
+
 object ApiCategoryContent {
 
   case class WithNoIdContent(name: String, slug: String, color: Int) {
@@ -13,17 +16,15 @@ object ApiCategoryContent {
     implicit val reads: Reads[WithNoIdContent] = Json.reads[WithNoIdContent]
   }
 
-  case class EmbeddedIdContent(id: Long, name: String, slug: String, color: Int) {
-    def value: TodoCategory#EmbeddedId = TodoCategory.embeddedId(
-      TodoCategory.Id(id.asInstanceOf[TodoCategory.Id.U]), name, slug, color
-    )
+  case class EmbeddedIdContent(id: TodoCategory.Id, name: String, slug: String, color: Int) {
+    def value: TodoCategory#EmbeddedId = TodoCategory.embeddedId(id, name, slug, color)
   }
 
   object EmbeddedIdContent {
     implicit val format: Format[EmbeddedIdContent] = Json.format[EmbeddedIdContent]
 
     def build(category: TodoCategory#EmbeddedId): EmbeddedIdContent = EmbeddedIdContent(
-      category.id.longValue(), category.v.name, category.v.slug, category.v.color
+      category.id, category.v.name, category.v.slug, category.v.color
     )
   }
 

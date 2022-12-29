@@ -4,17 +4,20 @@ import model.{Todo, TodoCategory}
 import play.api.libs.json.{Json, OWrites}
 import java.time.format.DateTimeFormatter
 
-case class ReadCategory(id: Long, name: String, slug: String, color: Int)
+/* implicitが必要 */
+import content.api.Utility._
+
+case class ReadCategory(id: TodoCategory.Id, name: String, slug: String, color: Int)
 
 object ReadCategory {
   implicit val writes: OWrites[ReadCategory] = Json.writes[ReadCategory]
 
   def build(category: TodoCategory#EmbeddedId): ReadCategory = ReadCategory(
-    category.id.longValue(), category.v.name, category.v.slug, category.v.color
+    category.id, category.v.name, category.v.slug, category.v.color
   )
 }
 
-case class ReadTodo(id: Long, title: String, body: String, date: String)
+case class ReadTodo(id: Todo.Id, title: String, body: String, date: String)
 
 object ReadTodo {
   implicit val writes: OWrites[ReadTodo] = Json.writes[ReadTodo]
@@ -22,7 +25,7 @@ object ReadTodo {
   private val DATE_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern("uuuu/MM/dd HH:mm:ss")
 
   private def build(todo: Todo#EmbeddedId): ReadTodo = ReadTodo(
-    todo.id.longValue(), todo.v.title, todo.v.body, todo.v.updatedAt.format(DATE_FORMATTER)
+    todo.id, todo.v.title, todo.v.body, todo.v.updatedAt.format(DATE_FORMATTER)
   )
 
   def builds(todos: Seq[Todo#EmbeddedId]): Seq[ReadTodo] =
