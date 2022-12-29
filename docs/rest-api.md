@@ -128,7 +128,7 @@ JSON
 }
 ```
 
-## /api/todos
+## /api/todo
 
 ### POST
 
