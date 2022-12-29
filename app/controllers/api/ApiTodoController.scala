@@ -22,20 +22,20 @@ class ApiTodoController @Inject()
       .flatMap {
         case Some(category) => todoRepository.all(category.id)
           .map(todos => Ok(Json.toJson(todo.Read.build(category, todos))))
-        case None => Future(NotFound)
+        case None => Future.successful(NotFound)
       }
   }
 
   def create: Action[JsValue] = Action(parse.json).async { implicit req =>
     req.body.validate[content.api.todo.Create].fold(
-      error => Future(BadRequest(error.toString)),
+      error => Future.successful(BadRequest(error.toString)),
       create => todoRepository.create(create.value).map(_ => Created)
     )
   }
 
   def update: Action[JsValue] = Action(parse.json).async { implicit req =>
     req.body.validate[content.api.todo.Update].fold(
-      error => Future(BadRequest(error.toString)),
+      error => Future.successful(BadRequest(error.toString)),
       update => todoRepository.update(update.value).map(_ => Ok)
     )
   }

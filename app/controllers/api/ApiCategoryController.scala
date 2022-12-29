@@ -24,14 +24,14 @@ class ApiCategoryController @Inject()
 
   def create: Action[JsValue] = Action(parse.json).async { implicit req =>
     req.body.validate[ApiCategoryContent.Create].fold(
-      error => Future(BadRequest(error.toString)),
+      error => Future.successful(BadRequest(error.toString)),
       create => categoryRepository.create(create.value).map(_ => Created)
     )
   }
 
   def update: Action[JsValue] = Action(parse.json).async { implicit req =>
     req.body.validate[ApiCategoryContent.Update].fold(
-      error => Future(BadRequest(error.toString)),
+      error => Future.successful(BadRequest(error.toString)),
       update => categoryRepository.update(update.value).map(_ => Ok)
     )
   }
