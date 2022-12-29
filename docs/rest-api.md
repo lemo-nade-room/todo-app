@@ -118,7 +118,8 @@ JSON
         {
           "id": 2,
           "title": "Hello",
-          "body": "world"
+          "body": "world",
+          "date": "2022/12/12"
         }
       ]
     }
