@@ -20,6 +20,9 @@ PUT     /api/category                 controllers.api.ApiCategoryController.upda
 DELETE  /api/category/:id             controllers.api.ApiCategoryController.delete(id: Long)
 
 GET     /api/:slug                    controllers.api.ApiTodoController.index(slug: String)
+POST    /api/todo                     controllers.api.ApiTodoController.create
+PUT     /api/todo                     controllers.api.ApiTodoController.update
+DELETE  /api/todo/:id                 controllers.api.ApiTodoController.delete(id: Long)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
