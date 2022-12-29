@@ -13,6 +13,8 @@ case class IxiasCategoryRepository[P <: JdbcProfile] @Inject()(implicit val driv
 
   import api._
 
+  def all(): Future[Seq[TodoCategory#EmbeddedId]] = RunDBAction(TodoCategoryTable, "slave") { _.result }
+
   def allWithTodos(): Future[Seq[(Option[Todo#EmbeddedId], TodoCategory#EmbeddedId)]] = {
     DBAction(TodoTable, "slave") { case (db, todo) =>
       DBAction(TodoCategoryTable, "slave") { case (_, category) =>
