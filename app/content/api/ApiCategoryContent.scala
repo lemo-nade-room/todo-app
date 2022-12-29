@@ -20,7 +20,7 @@ object ApiCategoryContent {
   }
 
   object EmbeddedIdContent {
-    implicit val format: Format[EmbeddedIdContent] = Format(Json.reads[EmbeddedIdContent], Json.writes[EmbeddedIdContent])
+    implicit val format: Format[EmbeddedIdContent] = Json.format[EmbeddedIdContent]
 
     def build(category: TodoCategory#EmbeddedId): EmbeddedIdContent = EmbeddedIdContent(
       category.id.longValue(), category.v.name, category.v.slug, category.v.color
