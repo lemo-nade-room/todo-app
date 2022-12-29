@@ -109,7 +109,8 @@ JSON
   "category": {
     "id": 1,
     "name": "フロントエンド",
-    "slug": "front"
+    "slug": "front",
+    "color": 3
   },
   "states": [
     {

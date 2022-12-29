@@ -24,4 +24,6 @@ case class DatabaseCategoryRepository() extends CategoryRepository {
     repository.update(category).map(_ => ())
 
   override def delete(id: Id): Future[Unit] = repository.delete(id)
+
+  override def findBySlug(slug: String): Future[Option[TodoCategory#EmbeddedId]] = repository.findBySlug(slug)
 }

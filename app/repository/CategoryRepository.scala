@@ -19,4 +19,6 @@ trait CategoryRepository {
   /** 指定されたカテゴリIDのカテゴリをそのカテゴリに所属するTODOごと削除 */
   def delete(id: TodoCategory.Id): Future[Unit]
 
+  def findBySlug(slug: String): Future[Option[TodoCategory#EmbeddedId]]
+
 }

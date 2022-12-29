@@ -13,13 +13,17 @@ case class IxiasCategoryRepository[P <: JdbcProfile] @Inject()(implicit val driv
 
   import api._
 
-  def all(): Future[Seq[TodoCategory#EmbeddedId]] = RunDBAction(TodoCategoryTable, "slave") { _.result }
+  def all(): Future[Seq[TodoCategory#EmbeddedId]] = RunDBAction(TodoCategoryTable, "slave") {
+    _.result
+  }
 
   def allWithTodos(): Future[Seq[(Option[Todo#EmbeddedId], TodoCategory#EmbeddedId)]] = {
     DBAction(TodoTable, "slave") { case (db, todo) =>
       DBAction(TodoCategoryTable, "slave") { case (_, category) =>
-        db.run {todo.joinRight(category).on(_.categoryId === _.id).result }
-        .map(_.map { case (t, c) => (t.map(_.toEmbeddedId), c.toEmbeddedId)})
+        db.run {
+          todo.joinRight(category).on(_.categoryId === _.id).result
+        }
+          .map(_.map { case (t, c) => (t.map(_.toEmbeddedId), c.toEmbeddedId) })
       }
     }
   }
@@ -32,6 +36,12 @@ case class IxiasCategoryRepository[P <: JdbcProfile] @Inject()(implicit val driv
         db.run((todosDeleteQuery andThen categoryDeleteQuery).transactionally)
       }
     }.map(_ => ())
+  }
+
+  def findBySlug(slug: String): Future[Option[EntityEmbeddedId]] = {
+    RunDBAction(TodoCategoryTable, "slave") { t =>
+      t.filter(_.slug === slug).result.headOption
+    }
   }
 
   override def get(id: Id): Future[Option[EntityEmbeddedId]] = {
