@@ -1,7 +1,7 @@
 package content.api
 
 import model.TodoCategory
-import play.api.libs.json.{Json, OWrites, Reads}
+import play.api.libs.json.{Format, Json, OWrites, Reads}
 
 object ApiCategoryContent {
 
@@ -20,8 +20,7 @@ object ApiCategoryContent {
   }
 
   object EmbeddedIdContent {
-    implicit val reads: Reads[EmbeddedIdContent] = Json.reads[EmbeddedIdContent]
-    implicit val writes: OWrites[EmbeddedIdContent] = Json.writes[EmbeddedIdContent]
+    implicit val format: Format[EmbeddedIdContent] = Format(Json.reads[EmbeddedIdContent], Json.writes[EmbeddedIdContent])
 
     def build(category: TodoCategory#EmbeddedId): EmbeddedIdContent = EmbeddedIdContent(
       category.id.longValue(), category.v.name, category.v.slug, category.v.color
