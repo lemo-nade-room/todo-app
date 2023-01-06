@@ -1,4 +1,6 @@
 openapi: 3.1.0
+x-stoplight:
+  id: j6ylvrtizzxll
 info:
   title: RESTful-API
   version: '1.0'
@@ -111,60 +113,6 @@ paths:
         '200':
           description: OK
       description: 指定したIDのカテゴリを削除する
-  /user:
-    post:
-      summary: Create New User
-      operationId: post-user
-      responses:
-        '200':
-          description: User Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-              examples:
-                New User Bob Fellow:
-                  value:
-                    id: 12
-                    firstName: Bob
-                    lastName: Fellow
-                    email: bob.fellow@gmail.com
-                    dateOfBirth: '1996-08-24'
-                    emailVerified: false
-                    createDate: '2020-11-18'
-        '400':
-          description: Missing Required Information
-        '409':
-          description: Email Already Taken
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                firstName:
-                  type: string
-                lastName:
-                  type: string
-                email:
-                  type: string
-                dateOfBirth:
-                  type: string
-                  format: date
-              required:
-                - firstName
-                - lastName
-                - email
-                - dateOfBirth
-            examples:
-              Create User Bob Fellow:
-                value:
-                  firstName: Bob
-                  lastName: Fellow
-                  email: bob.fellow@gmail.com
-                  dateOfBirth: '1996-08-24'
-        description: Post the necessary fields for the API to create a new user.
-      description: Create a new user.
   '/api/{slug}':
     parameters:
       - schema:
@@ -243,48 +191,10 @@ paths:
       description: 指定したIDのTODOを削除する
 components:
   schemas:
-    User:
-      title: User
-      type: object
-      description: ''
-      examples:
-        - id: 142
-          firstName: Alice
-          lastName: Smith
-          email: alice.smith@gmail.com
-          dateOfBirth: '1997-10-31'
-          emailVerified: true
-          signUpDate: '2019-08-24'
-      properties:
-        id:
-          type: integer
-          description: Unique identifier for the given user.
-        firstName:
-          type: string
-        lastName:
-          type: string
-        email:
-          type: string
-          format: email
-        dateOfBirth:
-          type: string
-          format: date
-          example: '1997-10-31'
-        emailVerified:
-          type: boolean
-          description: Set to true if the user's email has been verified.
-        createDate:
-          type: string
-          format: date
-          description: The date that the user was created.
-      required:
-        - id
-        - firstName
-        - lastName
-        - email
-        - emailVerified
     Category:
       title: CreateCategory
+      x-stoplight:
+        id: e0565a840699b
       type: object
       properties:
         id:
@@ -304,6 +214,8 @@ components:
           color: 1
     CreateCategory:
       title: CreateCategory
+      x-stoplight:
+        id: 6mfvue8k54kzh
       type: object
       properties:
         name:
@@ -320,6 +232,8 @@ components:
           color: 2
     Todo:
       title: Todo
+      x-stoplight:
+        id: yyqaxw5bdifop
       type: object
       properties:
         id:
@@ -338,6 +252,8 @@ components:
           date: '2019-08-24T14:15:22Z'
     State:
       title: State
+      x-stoplight:
+        id: 99sddsc8ev0sr
       type: object
       properties:
         state:
@@ -348,6 +264,8 @@ components:
             $ref: '#/components/schemas/Todo'
     CreateTodo:
       title: CreateTodo
+      x-stoplight:
+        id: n6yby0fqxdb8w
       type: object
       properties:
         categoryId:
@@ -362,6 +280,8 @@ components:
           '': string
     UpdateTodo:
       title: UpdateTodo
+      x-stoplight:
+        id: sqnf43tf73b1o
       type: object
       properties:
         id:
@@ -382,3 +302,4 @@ components:
           title: string
           body: string
           state: 0
+x-internal: false
