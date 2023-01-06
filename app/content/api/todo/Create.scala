@@ -3,7 +3,6 @@ package content.api.todo
 import ixias.util.json.JsonEnvReads
 import model.{Todo, TodoCategory}
 import play.api.libs.functional.syntax.toFunctionalBuilderOps
-import play.api.libs.json.Reads.email
 import play.api.libs.json.{JsPath, Json, Reads}
 import validation._
 
