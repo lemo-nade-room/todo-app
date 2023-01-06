@@ -1,7 +1,8 @@
 package content.api.todo
 
 import model.{Todo, TodoCategory}
-import play.api.libs.json.{Json, OWrites}
+import play.api.libs.json.{Json, Writes}
+
 import java.time.format.DateTimeFormatter
 
 /* implicitが必要 */
@@ -10,7 +11,7 @@ import content.api.Utility._
 case class ReadCategory(id: TodoCategory.Id, name: String, slug: String, color: Int)
 
 object ReadCategory {
-  implicit val writes: OWrites[ReadCategory] = Json.writes[ReadCategory]
+  implicit val writes: Writes[ReadCategory] = Json.writes[ReadCategory]
 
   def build(category: TodoCategory#EmbeddedId): ReadCategory = ReadCategory(
     category.id, category.v.name, category.v.slug, category.v.color
@@ -20,7 +21,7 @@ object ReadCategory {
 case class ReadTodo(id: Todo.Id, title: String, body: String, date: String)
 
 object ReadTodo {
-  implicit val writes: OWrites[ReadTodo] = Json.writes[ReadTodo]
+  implicit val writes: Writes[ReadTodo] = Json.writes[ReadTodo]
 
   private val DATE_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern("uuuu/MM/dd HH:mm:ss")
 
@@ -35,7 +36,7 @@ object ReadTodo {
 case class ReadState(state: Short, todos: Seq[ReadTodo])
 
 object ReadState {
-  implicit val writes: OWrites[ReadState] = Json.writes[ReadState]
+  implicit val writes: Writes[ReadState] = Json.writes[ReadState]
 
   def builds(todos: Seq[Todo#EmbeddedId]): Seq[ReadState] = {
     todos.groupBy(_.v.state).map { case (state, todo) =>
@@ -47,7 +48,7 @@ object ReadState {
 case class Read(category: ReadCategory, states: Seq[ReadState])
 
 object Read {
-  implicit val writes: OWrites[Read] = Json.writes[Read]
+  implicit val writes: Writes[Read] = Json.writes[Read]
 
   def build(category: TodoCategory#EmbeddedId, todos: Seq[Todo#EmbeddedId]): Read = Read(
     ReadCategory.build(category), ReadState.builds(todos)

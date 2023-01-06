@@ -2,7 +2,7 @@ package content.api
 
 import model.TodoCategory
 import play.api.libs.functional.syntax.{toApplicativeOps, toFunctionalBuilderOps}
-import play.api.libs.json.{Format, JsPath, Json, OWrites, Reads}
+import play.api.libs.json.{Format, JsPath, Json, Reads, Writes}
 import validation._
 
 /* implicitが必要 */
@@ -44,7 +44,7 @@ object ApiCategoryContent {
   case class All(categories: Seq[EmbeddedIdContent])
 
   object All {
-    implicit val writes: OWrites[All] = Json.writes[All]
+    implicit val writes: Writes[All] = Json.writes[All]
 
     def build(categories: Seq[TodoCategory#EmbeddedId]): All = All(
       categories.map(EmbeddedIdContent.build)
