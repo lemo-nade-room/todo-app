@@ -1,8 +1,5 @@
 {
   "openapi": "3.1.0",
-  "x-stoplight": {
-    "id": "j6ylvrtizzxll"
-  },
   "info": {
     "title": "RESTful-API",
     "version": "1.0",
@@ -434,9 +431,6 @@
       },
       "Category": {
         "title": "CreateCategory",
-        "x-stoplight": {
-          "id": "e0565a840699b"
-        },
         "type": "object",
         "properties": {
           "id": {
@@ -465,9 +459,6 @@
       },
       "CreateCategory": {
         "title": "CreateCategory",
-        "x-stoplight": {
-          "id": "6mfvue8k54kzh"
-        },
         "type": "object",
         "properties": {
           "name": {
@@ -492,9 +483,6 @@
       },
       "Todo": {
         "title": "Todo",
-        "x-stoplight": {
-          "id": "yyqaxw5bdifop"
-        },
         "type": "object",
         "properties": {
           "id": {
@@ -522,9 +510,6 @@
       },
       "State": {
         "title": "State",
-        "x-stoplight": {
-          "id": "99sddsc8ev0sr"
-        },
         "type": "object",
         "properties": {
           "state": {
@@ -540,9 +525,6 @@
       },
       "CreateTodo": {
         "title": "CreateTodo",
-        "x-stoplight": {
-          "id": "n6yby0fqxdb8w"
-        },
         "type": "object",
         "properties": {
           "categoryId": {
@@ -565,9 +547,6 @@
       },
       "UpdateTodo": {
         "title": "UpdateTodo",
-        "x-stoplight": {
-          "id": "sqnf43tf73b1o"
-        },
         "type": "object",
         "properties": {
           "id": {
@@ -599,6 +578,5 @@
         ]
       }
     }
-  },
-  "x-internal": false
+  }
 }
