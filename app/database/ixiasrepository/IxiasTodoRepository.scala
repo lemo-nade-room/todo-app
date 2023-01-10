@@ -12,10 +12,6 @@ case class IxiasTodoRepository[P <: JdbcProfile]()(implicit val driver: P)
 
   import api._
 
-  def all(): Future[Seq[EntityEmbeddedId]] = RunDBAction(TodoTable, "slave") { t =>
-    t.result
-  }
-
   def all(categoryId: TodoCategory.Id): Future[Seq[EntityEmbeddedId]] = RunDBAction(TodoTable, "slave") { t =>
     t.filter(_.categoryId === categoryId).result
   }

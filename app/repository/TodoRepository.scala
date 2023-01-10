@@ -12,9 +12,6 @@ trait TodoRepository {
 
   def update(todo: Todo#EmbeddedId): Future[Unit]
 
-  /** @return 全てのTodoを取得する */
-  def all(): Future[Seq[Todo#EmbeddedId]]
-
   /** @return 指定されたカテゴリのIdに所属するTodoを全て取得する */
   def all(categoryId: TodoCategory.Id): Future[Seq[Todo#EmbeddedId]]
 

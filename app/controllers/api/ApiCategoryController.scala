@@ -7,7 +7,6 @@ import play.api.mvc._
 import repository.CategoryRepository
 import play.api.libs.json._
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
 
 @Singleton
 class ApiCategoryController @Inject()

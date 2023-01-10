@@ -15,8 +15,6 @@ case class DatabaseTodoRepository() extends TodoRepository {
 
   override def update(todo: Todo#EmbeddedId): Future[Unit] = repository.update(todo).map(_ => ())
 
-  override def all(): Future[Seq[Todo#EmbeddedId]] = repository.all()
-
   override def all(categoryId: TodoCategory.Id): Future[Seq[Todo#EmbeddedId]] = repository.all(categoryId)
 
   override def delete(id: Todo.Id): Future[Unit] = repository.remove(id).map(_ => ())
