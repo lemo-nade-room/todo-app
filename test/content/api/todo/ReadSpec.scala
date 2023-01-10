@@ -47,7 +47,7 @@ class ReadSpec extends Specification {
               "id" -> 1,
               "title" -> "タイトル1",
               "body" -> "ボディ1",
-              "date" -> "2022/01/23 01:02:03",
+              "date" -> "2022-01-23T01:02:03",
             ))
           ),
         Json.obj(
@@ -56,7 +56,7 @@ class ReadSpec extends Specification {
               "id" -> 2,
               "title" -> "タイトル2",
               "body" -> "ボディ2",
-              "date" -> "2022/01/23 07:08:09",
+              "date" -> "2022-01-23T07:08:09",
             ))
           )
         )
