@@ -23,7 +23,7 @@ case class ReadTodo(id: Todo.Id, title: String, body: String, date: String)
 object ReadTodo {
   implicit val writes: Writes[ReadTodo] = Json.writes[ReadTodo]
 
-  private val DATE_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern("uuuu/MM/dd HH:mm:ss")
+  private val DATE_FORMATTER: DateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME
 
   private def build(todo: Todo#EmbeddedId): ReadTodo = ReadTodo(
     todo.id, todo.v.title, todo.v.body, todo.v.updatedAt.format(DATE_FORMATTER)
