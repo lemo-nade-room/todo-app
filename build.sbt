@@ -22,8 +22,8 @@ libraryDependencies ++= Seq(
   "net.ixias" %% "ixias-play" % "1.1.36",
   "mysql"          % "mysql-connector-java" % "5.1.+",
   "ch.qos.logback" % "logback-classic"      % "1.1.+",
-  "org.specs2" %% "specs2-core" % "3.9.1" % Test,
-  "org.specs2" %% "specs2-matcher-extra" % "3.9.1" % Test,
+  "org.specs2" %% "specs2-core" % "4.17.0" % Test,
+  "org.specs2" %% "specs2-matcher-extra" % "4.17.0" % Test,
 )
 // Adds additional packages into Twirl
 //TwirlKeys.templateImports += "com.example.controllers._"
