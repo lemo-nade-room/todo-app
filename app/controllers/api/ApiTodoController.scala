@@ -5,6 +5,7 @@ import play.api.mvc._
 import repository.{CategoryRepository, TodoRepository}
 import play.api.libs.json._
 import content.api._
+import content.api.todo.{Create, Update}
 import model.Todo
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -26,22 +27,15 @@ class ApiTodoController @Inject()
       }
   }
 
-  def create: Action[JsValue] = Action(parse.json).async { implicit req =>
-    req.body.validate[content.api.todo.Create].fold(
-      error => Future.successful(BadRequest(error.toString)),
-      create => todoRepository.create(create.value).map(_ => Created)
-    )
+  def create: Action[Create] = Action(parse.json[content.api.todo.Create]).async { implicit req =>
+    todoRepository.create(req.body.value).map(_ => Created)
   }
 
-  def update: Action[JsValue] = Action(parse.json).async { implicit req =>
-    req.body.validate[content.api.todo.Update].fold(
-      error => Future.successful(BadRequest(error.toString)),
-      update => todoRepository.update(update.value).map(_ => Ok)
-    )
+  def update: Action[Update] = Action(parse.json[content.api.todo.Update]).async { implicit req =>
+    todoRepository.update(req.body.value).map(_ => Ok)
   }
 
   def delete(id: Long): Action[AnyContent] = Action.async { implicit req =>
-    println(id)
     todoRepository.delete(Todo.Id(id.asInstanceOf[Todo.Id.U]))
       .map(_ => Ok)
   }

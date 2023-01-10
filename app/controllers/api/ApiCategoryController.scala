@@ -22,22 +22,17 @@ class ApiCategoryController @Inject()
       .map(all => Ok(Json.toJson(all)))
   }
 
-  def create: Action[JsValue] = Action(parse.json).async { implicit req =>
-    req.body.validate[ApiCategoryContent.Create].fold(
-      error => Future.successful(BadRequest(error.toString)),
-      create => categoryRepository.create(create.value).map(_ => Created)
-    )
+  def create: Action[ApiCategoryContent.Create] = Action(parse.json[ApiCategoryContent.Create]).async { implicit req =>
+    categoryRepository.create(req.body.value).map(_ => Created)
   }
 
-  def update: Action[JsValue] = Action(parse.json).async { implicit req =>
-    req.body.validate[ApiCategoryContent.Update].fold(
-      error => Future.successful(BadRequest(error.toString)),
-      update => categoryRepository.update(update.value).map(_ => Ok)
-    )
+  def update: Action[ApiCategoryContent.Update] = Action(parse.json[ApiCategoryContent.Update]).async { implicit req =>
+    categoryRepository.update(req.body.value).map(_ => Ok)
   }
 
   def delete(id: Long): Action[AnyContent] = Action.async { implicit req =>
-    categoryRepository.delete(TodoCategory.Id(id.asInstanceOf[TodoCategory.Id.U]))
+    categoryRepository
+      .delete(TodoCategory.Id(id.asInstanceOf[TodoCategory.Id.U]))
       .map(_ => Ok)
   }
 
