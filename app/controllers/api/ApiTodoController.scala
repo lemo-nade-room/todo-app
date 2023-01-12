@@ -7,6 +7,7 @@ import play.api.libs.json._
 import content.api._
 import content.api.todo.{Create, Update}
 import model.Todo
+import service.TodoStateService
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
@@ -16,15 +17,19 @@ class ApiTodoController @Inject()
   val controllerComponents: ControllerComponents,
   val categoryRepository: CategoryRepository,
   val todoRepository: TodoRepository,
+  val todoStateService: TodoStateService,
 ) extends BaseController {
 
-  def index(slug: String): Action[AnyContent] = Action.async { implicit req =>
-    categoryRepository.findBySlug(slug)
-      .flatMap {
-        case Some(category) => todoRepository.all(category.id)
-          .map(todos => Ok(Json.toJson(todo.Read.build(category, todos))))
-        case None => Future.successful(NotFound)
-      }
+  def index(slug: String, stateCode: Int, page: Int): Action[AnyContent] = Action.async { implicit req =>
+    if (Todo.State.isValid(stateCode.toShort) && page >= 1) {
+      categoryRepository.findBySlug(slug).flatMap(
+        _.map { category =>
+          todoStateService.fetchTodos(category.id, Todo.State(stateCode.toShort), page)
+            .map(todos => Ok(Json.toJson(todo.Read.build(category, todos))))
+        }
+          .getOrElse(Future.successful(NotFound))
+      )
+    } else Future.successful(NotFound)
   }
 
   def create: Action[Create] = Action(parse.json[content.api.todo.Create]).async { implicit req =>

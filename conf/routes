@@ -19,7 +19,7 @@ POST    /api/category                 controllers.api.ApiCategoryController.crea
 PUT     /api/category                 controllers.api.ApiCategoryController.update
 DELETE  /api/category/:id             controllers.api.ApiCategoryController.delete(id: Long)
 
-GET     /api/:slug                    controllers.api.ApiTodoController.index(slug: String)
+GET     /api/:slug/:state/:page       controllers.api.ApiTodoController.index(slug: String, state: Int, page: Int)
 POST    /api/todo                     controllers.api.ApiTodoController.create
 PUT     /api/todo                     controllers.api.ApiTodoController.update
 DELETE  /api/todo/:id                 controllers.api.ApiTodoController.delete(id: Long)

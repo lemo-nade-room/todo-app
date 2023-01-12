@@ -36,6 +36,8 @@ object Todo {
       case Some(v) => v
       case None => throw new IllegalArgumentException(s"Stateが${value}で初期化された")
     }
+
+    def isValid(code: Short): Boolean = values.map(_.code).contains(code)
   }
 
   def withNoId
