@@ -1,52 +1,39 @@
 package service
 
+import com.google.inject.{ImplementedBy, Inject}
 import model.{Todo, TodoCategory}
-import repository.{CategoryRepository, TodoRepository}
-
-import scala.concurrent.ExecutionContext.Implicits.global
+import repository.TodoRepository
 import scala.concurrent.Future
 
+@ImplementedBy(classOf[TodoStateServiceImpl])
 trait TodoStateService {
 
   /**
    * 指定された条件にマッチするページのtodo
    *
-   * @param slug  カテゴリのslug
+   * @param categoryId  カテゴリID
    * @param state todoのstate
    * @param page  1以上
    * @return マッチするものがなければ空配列を返す
    */
-  def fetchTodos(slug: String, state: Todo.State, page: Int): Future[Seq[Todo#EmbeddedId]]
+  def fetchTodos(categoryId: TodoCategory.Id, state: Todo.State, page: Int): Future[Seq[Todo#EmbeddedId]]
 }
 
 object TodoStateService {
   val countPerPage = 20
 }
 
-case class TodoStateServiceImpl
+case class TodoStateServiceImpl @Inject()
 (
-  categoryRepository: CategoryRepository,
   todoRepository: TodoRepository
 ) extends TodoStateService {
-  override def fetchTodos
+  def fetchTodos
   (
-    slug: String,
-    state: Todo.State,
-    page: Int
-  ): Future[Seq[Todo#EmbeddedId]] = {
-    categoryRepository.findBySlug(slug).flatMap(
-      _.map { category => fetchTodosByCategoryId(category.id, state, page) }
-        .getOrElse(Future.successful(Nil))
-    )
-  }
-
-  private def fetchTodosByCategoryId
-  (
-    id: TodoCategory.Id,
+    categoryId: TodoCategory.Id,
     state: Todo.State,
     page: Int
   ): Future[Seq[Todo#EmbeddedId]] =
-    todoRepository.todosSortDeskUpdated(id, state, limit, offset(page))
+    todoRepository.todosSortDeskUpdated(categoryId, state, limit, offset(page))
 
   private def limit = TodoStateService.countPerPage
 
