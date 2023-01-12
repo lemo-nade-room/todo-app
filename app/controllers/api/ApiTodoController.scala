@@ -25,7 +25,7 @@ class ApiTodoController @Inject()
       categoryRepository.findBySlug(slug).flatMap(
         _.map { category =>
           todoStateService.fetchTodos(category.id, Todo.State(stateCode.toShort), page)
-            .map(todos => Ok(Json.toJson(todo.Read.build(category, todos))))
+            .map(todos => Ok(Json.toJson(todo.Read.build(todos))))
         }
           .getOrElse(Future.successful(NotFound))
       )
