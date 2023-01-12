@@ -8,7 +8,6 @@ import slick.jdbc.MySQLProfile
 import java.time.LocalDateTime
 import java.util.concurrent.TimeUnit
 import scala.concurrent.Await
-import org.specs2.specification.core.AsExecution
 import scala.concurrent.duration.Duration
 
 class IxiasTodoRepositorySpec extends Specification with BeforeAll with AfterAll {
