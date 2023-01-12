@@ -36,14 +36,33 @@ object Todo {
       case Some(v) => v
       case None => throw new IllegalArgumentException(s"Stateが${value}で初期化された")
     }
+
+    def isValid(code: Short): Boolean = values.map(_.code).contains(code)
   }
 
-  def withNoId(categoryId: TodoCategory.Id, title: String, body: String, state: State): WithNoId = Entity.WithNoId(
-    Todo(None, categoryId, title, body, state)
+  def withNoId
+  (
+    categoryId: TodoCategory.Id,
+    title: String,
+    body: String,
+    state: State,
+    updatedAt: LocalDateTime = NOW,
+    createdAt: LocalDateTime = NOW,
+  ): WithNoId = Entity.WithNoId(
+    Todo(None, categoryId, title, body, state, updatedAt, createdAt)
   )
 
-  def embeddedId(id: Id, categoryId: TodoCategory.Id, title: String, body: String, state: State): EmbeddedId = Entity.EmbeddedId(
-    Todo(Some(id), categoryId, title, body, state)
+  def embeddedId
+  (
+    id: Id,
+    categoryId: TodoCategory.Id,
+    title: String,
+    body: String,
+    state: State,
+    updatedAt: LocalDateTime = NOW,
+    createdAt: LocalDateTime = NOW
+  ): EmbeddedId = Entity.EmbeddedId(
+    Todo(Some(id), categoryId, title, body, state, updatedAt, createdAt)
   )
 
 }

@@ -28,4 +28,5 @@ object TodoCategory {
   def embeddedId(id: Id, name: String, slug: String, color: Int): EmbeddedId = Entity.EmbeddedId(
     TodoCategory(Some(id), name, slug, color)
   )
+
 }

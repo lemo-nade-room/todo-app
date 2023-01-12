@@ -12,10 +12,6 @@ case class IxiasTodoRepository[P <: JdbcProfile]()(implicit val driver: P)
 
   import api._
 
-  def all(): Future[Seq[EntityEmbeddedId]] = RunDBAction(TodoTable, "slave") { t =>
-    t.result
-  }
-
   def all(categoryId: TodoCategory.Id): Future[Seq[EntityEmbeddedId]] = RunDBAction(TodoTable, "slave") { t =>
     t.filter(_.categoryId === categoryId).result
   }
@@ -54,4 +50,22 @@ case class IxiasTodoRepository[P <: JdbcProfile]()(implicit val driver: P)
         }
       } yield old
     }
+
+  def todosSortDeskUpdated
+  (
+    categoryId: TodoCategory.Id,
+    state: Todo.State,
+    limit: Int = 20,
+    offset: Int = 0,
+  ): Future[Seq[Todo#EmbeddedId]] = {
+    RunDBAction(TodoTable, "slave") {
+      _
+        .filter(_.categoryId === categoryId)
+        .filter(_.state === state)
+        .sortBy(_.updatedAt.desc)
+        .drop(offset)
+        .take(limit)
+        .result
+    }
+  }
 }

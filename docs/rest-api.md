@@ -109,7 +109,8 @@ JSON
   "category": {
     "id": 1,
     "name": "フロントエンド",
-    "slug": "front"
+    "slug": "front",
+    "color": 3
   },
   "states": [
     {
@@ -118,7 +119,8 @@ JSON
         {
           "id": 2,
           "title": "Hello",
-          "body": "world"
+          "body": "world",
+          "date": "2022/12/12"
         }
       ]
     }
@@ -126,7 +128,7 @@ JSON
 }
 ```
 
-## /api/todos
+## /api/todo
 
 ### POST
 

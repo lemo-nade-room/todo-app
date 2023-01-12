@@ -7,6 +7,8 @@ import scala.concurrent.Future
 
 @ImplementedBy(classOf[DatabaseCategoryRepository])
 trait CategoryRepository {
+  def all(): Future[Seq[TodoCategory#EmbeddedId]]
+
   /** @return 全てのカテゴリとTodo */
   def allWithTodos(): Future[Seq[(Option[Todo#EmbeddedId], TodoCategory#EmbeddedId)]]
 
@@ -16,5 +18,7 @@ trait CategoryRepository {
 
   /** 指定されたカテゴリIDのカテゴリをそのカテゴリに所属するTODOごと削除 */
   def delete(id: TodoCategory.Id): Future[Unit]
+
+  def findBySlug(slug: String): Future[Option[TodoCategory#EmbeddedId]]
 
 }
