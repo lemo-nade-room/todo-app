@@ -21,6 +21,7 @@ class ApiTodoController @Inject()
 ) extends BaseController {
 
   def index(slug: String, stateCode: Int, page: Int): Action[AnyContent] = Action.async { implicit req =>
+    // TODO: 引数をvalidateしたい
     if (Todo.State.isValid(stateCode.toShort) && page >= 1) {
       categoryRepository.findBySlug(slug).flatMap(
         _.map { category =>
